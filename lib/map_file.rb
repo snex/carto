@@ -163,11 +163,8 @@ module RpTools
                 } # sun.awt.geom.Order1
               } # curves
             } # topology
-            backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-              assetId {
-                id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
-              } # assetId
-              scale 1.0
+            backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
+              color -16777216
             } # backgroundPaint
             boardPosition {
               x 0
@@ -182,10 +179,6 @@ module RpTools
             width 0
           } # zone
           assetMap {
-            entry {
-              send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundPaint/assetId")
-              null
-            } # entry 
             entry {
               send("net.rptools.lib.MD5Key", :reference => "../../../zone/drawables/net.rptools.maptool.model.drawing.DrawnElement/pen/paint/assetId")
               null
