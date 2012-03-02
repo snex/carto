@@ -2,6 +2,7 @@ require 'yaml'
 require 'chunky_png'
 require 'csv'
 require 'map_file'
+require 'awesome_print'
 
 class Carto
 
@@ -14,9 +15,13 @@ class Carto
     if !default_options.has_key?(:map_file)
       raise "No map file supplied!"
     end
+    map = []
+    CSV.foreach(default_options[:map_file], :col_sep => "\t") do |row|
+      map << row
+    end
 
     build_tileset default_options[:tileset]
-    @map_file = RpTools::MapFile.new
+    @map_file = RpTools::MapFile.new map
   end
 
   def write_map
@@ -48,9 +53,6 @@ class Carto
 #  'DPL' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').rotate_left!
 #}
 #
-#CSV.foreach(infile, :col_sep => "\t") do |row|
-#  map << row
-#end
 #
 #map_png = ChunkyPNG::Image.new(50 * map.size, 50 * map[0].size, ChunkyPNG::Color::TRANSPARENT)
 #

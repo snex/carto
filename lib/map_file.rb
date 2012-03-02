@@ -77,42 +77,48 @@ module RpTools
             tokenVisionDistance 1000
             unitsPerCell 5
             drawables(:class => "linked-list") {
-              send("net.rptools.maptool.model.drawing.DrawnElement") {
-                drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
-                  id_ {
-                    baGUID (0...8).map{65.+(rand(25)).chr}.join
-                  } # id_
-                  layer "BACKGROUND"
-                  shape(:class => "java.awt.Rectangle") {
-                    x 0
-                    y_ 0
-                    width 25
-                    height 25
-                  } # shape
-                  useAntiAliasing false
-                } # drawable
-                pen {
-                  foregroundMode 0
-                  paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                    assetId {
-                      id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
-                    } # assetId
-                    scale 1.0
-                  } # paint
-                  backgroundMode 0
-                  backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                    assetId {
-                      id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
-                    } # assetId
-                    scale 1.0
-                  } # backgroundPaint
-                  thickness 1.0
-                  eraser false
-                  opacity 1.0
-                  color 0
-                  backgroundColor 0
-                } # pen
-              } # net.rptools.maptool.model.drawing.DrawnElement
+              map.each_with_index do |row, i|
+                row.each_with_index do |tile, j|
+                  if tile == 'F'
+                    send("net.rptools.maptool.model.drawing.DrawnElement") {
+                      drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
+                        id_ {
+                          baGUID (0...8).map{65.+(rand(25)).chr}.join
+                        } # id_
+                        layer "BACKGROUND"
+                        shape(:class => "java.awt.Rectangle") {
+                          x j * 25
+                          y_ i * 25
+                          width 25
+                          height 25
+                        } # shape
+                        useAntiAliasing false
+                      } # drawable
+                      pen {
+                        foregroundMode 0
+                        paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                          assetId {
+                            id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
+                          } # assetId
+                          scale 1.0
+                        } # paint
+                        backgroundMode 0
+                        backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                          assetId {
+                            id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
+                          } # assetId
+                          scale 1.0
+                        } # backgroundPaint
+                        thickness 1.0
+                        eraser false
+                        opacity 1.0
+                        color 0
+                        backgroundColor 0
+                      } # pen
+                    } # net.rptools.maptool.model.drawing.DrawnElement
+                  end
+                end
+              end
             } # drawables
             gmDrawables(:class => "linked-list")
             objectDrawables(:class => "linked-list")
