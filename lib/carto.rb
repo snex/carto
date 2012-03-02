@@ -1,19 +1,26 @@
 require 'yaml'
 require 'chunky_png'
 require 'csv'
+require 'map_file'
 
 class Carto
 
-  attr :tileset
+  attr :tileset, :map_file
 
   def initialize options = {}
     default_options = { :tileset => 'default' }
     default_options.merge!(options)
 
+    if !default_options.has_key?(:map_file)
+      raise "No map file supplied!"
+    end
+
     build_tileset default_options[:tileset]
+    @map_file = RpTools::MapFile.new
   end
 
   def write_map
+    @map_file.save
   end
 
   private
