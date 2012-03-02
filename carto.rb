@@ -5,7 +5,19 @@ infile = ARGV[0]
 map = []
 
 tsv_mapping = {
-  'F' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/FlagsDark.png')
+  'F'   => ChunkyPNG::Image.from_file('/home/snex/mapstuff/FlagsDark.png'),
+  'DT'  => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png'),
+  'DB'  => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').flip_horizontally!,
+  'DR'  => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').rotate_right!,
+  'DL'  => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').rotate_left!,
+  'DST' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/DoorSecret.png'),
+  'DSB' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/DoorSecret.png').flip_horizontally!,
+  'DSR' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/DoorSecret.png').rotate_right!,
+  'DSL' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/DoorSecret.png').rotate_left!,
+  'DPT' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png'),
+  'DPB' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').flip_horizontally!,
+  'DPR' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').rotate_right!,
+  'DPL' => ChunkyPNG::Image.from_file('/home/snex/mapstuff/Door.png').rotate_left!
 }
 
 CSV.foreach(infile, :col_sep => "\t") do |row|
