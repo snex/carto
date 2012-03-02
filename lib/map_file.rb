@@ -15,7 +15,6 @@ module RpTools
     end
 
     def save filename = 'output/new_map.rpmap'
-      awesome_print @content_file.xml_data
       Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zipfile|
         zipfile.get_output_stream("content.xml") { |f| f.puts(@content_file.xml_data.to_xml) }
         zipfile.get_output_stream("properties.xml") { |f| f.puts(@properties_file.xml_data.to_xml) }
@@ -49,7 +48,7 @@ module RpTools
                   send("sun.awt.geom.Order0") {
                     direction 1
                     x 0.0
-                    y 0.0
+                    y_ 0.0
                   } # sun.awt.geom.Order0
                   send("sun.awt.geom.Order1") {
                     direction 1
@@ -86,7 +85,7 @@ module RpTools
                   layer "BACKGROUND"
                   shape(:class => "java.awt.Rectangle") {
                     x 0
-                    y 0
+                    y_ 0
                     width 25
                     height 25
                   } # shape
@@ -142,7 +141,7 @@ module RpTools
                 send("sun.awt.geom.Order0") {
                   direction 1
                   x 0.0
-                  y 0.0
+                  y_ 0.0
                 } # sun.awt.geom.Order0
                 send("sun.awt.geom.Order1") {
                   direction 1
@@ -172,7 +171,7 @@ module RpTools
             } # backgroundPaint
             boardPosition {
               x 0
-              y 0
+              y_ 0
             } # boardPosition
             drawBoard true
             boardChanged false
