@@ -144,29 +144,35 @@ module RpTools
             } # fogPaint
             topology {
               curves {
-                send("sun.awt.geom.Order0") {
-                  direction 1
-                  x 0.0
-                  y_ 0.0
-                } # sun.awt.geom.Order0
-                send("sun.awt.geom.Order1") {
-                  direction 1
-                  x0 0.0
-                  y0 0.0
-                  x1 0.0
-                  y1 25.0
-                  xmin 0.0
-                  xmax 0.0
-                } # sun.awt.geom.Order1
-                send("sun.awt.geom.Order1") {
-                  direction -1
-                  x0 25.0
-                  y0 0.0
-                  x1 25.0
-                  y1 25.0
-                  xmin 25.0
-                  xmax 25.0
-                } # sun.awt.geom.Order1
+                map.each_with_index do |row, i|
+                  row.each_with_index do |tile, j|
+                    if tile != 'F'
+                      send("sun.awt.geom.Order0") {
+                        direction 1
+                        x  j * 25.0
+                        y_ i * 25.0
+                      } # sun.awt.geom.Order0
+                      send("sun.awt.geom.Order1") {
+                        direction 1
+                        x0 j * 25.0
+                        y0 i * 25.0
+                        x1 j * 25.0
+                        y1 (i + 1) * 25.0
+                        xmin j * 25.0
+                        xmax i * 25.0
+                      } # sun.awt.geom.Order1
+                      send("sun.awt.geom.Order1") {
+                        direction -1
+                        x0 (j + 1) * 25.0
+                        y0 i * 25.0
+                        x1 (j + 1) * 25.0
+                        y1 (i + 1) * 25.0
+                        xmin (j + 1) * 25.0
+                        xmax (i + 1) * 25.0
+                      } # sun.awt.geom.Order1
+                    end
+                  end
+                end
               } # curves
             } # topology
             backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
