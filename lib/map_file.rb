@@ -39,6 +39,7 @@ module RpTools
 
     def initialize map = [], asset_group, tileset
       asset_map = {}
+      token_map = []
       @xml_data = Nokogiri::XML::Builder.new do
         send("net.rptools.maptool.util.PersistenceUtil_-PersistedMap") {
           zone {
@@ -88,9 +89,9 @@ module RpTools
               count = 0
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
-                  next if tile.nil?
+                  next if tile.nil? || tile != 'F'
                   count += 1
-                  asset_map[tile] = count unless asset_map.has_key?(tile)
+                  asset_map[tile] = ['paint', count] unless asset_map.has_key?(tile)
                   send("net.rptools.maptool.model.drawing.DrawnElement") {
                     comment "refpoint #{count}"
                     drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
@@ -135,9 +136,79 @@ module RpTools
             objectDrawables(:class => "linked-list")
             backgroundDrawables(:class => "linked-list")
             labels(:class => "linked-hash-map")
-            tokenMap
+            tokenMap {
+              count = 0
+              map.each_with_index do |row, i|
+                row.each_with_index do |tile, j|
+                  next if tile.nil? || tile == 'F'
+                  count += 1
+                  token_map << count
+                  asset_map[tile] = ['token', count] unless asset_map.has_key?(tile)
+                  entry {
+                    send("net.rptools.maptool.model.GUID") {
+                      baGUID (0...8).map{65.+(rand(25)).chr}.join
+                    } # net.rptools.maptool.model.GUID
+                    send("net.rptools.maptool.model.Token") {
+                      id_ {
+                        baGUID (0...8).map{65.+(rand(25)).chr}.join
+                      } # id
+                      beingImpersonated false
+                      exposedAreaGUID {
+                        baGUID (0...8).map{65.+(rand(25)).chr}.join
+                      } # exposedAreaGUID
+                      imageAssetMap {
+                        entry {
+                          null
+                          send("net.rptools.lib.MD5Key") {
+                            id_ asset_group.assets.find { |asset| asset.image_file == tileset[tile] }.asset_md5
+                          } # net.rptools.lib.MD5Key
+                        } # entry
+                      } # imageAssetMap
+                      x j * 25
+                      y_ i * 25
+                      z 1
+                      anchorX j * 25
+                      anchorY i * 25
+                      sizeScale 1.0
+                      lastX (j + 1) * 25
+                      lastY i * 25
+                      snapToScale true
+                      width 250
+                      height 100
+                      scaleX 1.0
+                      scaleY 1.0
+                      sizeMap {
+                        entry {
+                          send("java-class", "net.rptools.maptool.model.SquareGrid")
+                          send("net.rptools.maptool.model.GUID") {
+                            baGUID (0...8).map{65.+(rand(25)).chr}.join
+                          } # net.rptools.maptool.model.GUID
+                        } # entry
+                      } # sizeMap
+                      snapToGrid true
+                      isVisible true
+                      visibleOnlyToOwner false
+                      name "Door"
+                      ownerType 0
+                      tokenShape "TOP_DOWN"
+                      tokenType "NPC"
+                      layer "BACKGROUND"
+                      propertyType "Basic"
+                      isFlippedX false
+                      isFlippedY false
+                      hasSight false
+                      state
+                    } # net.rptools.maptool.model.Token
+                  } # entry
+                end
+              end
+            } # tokenMap
             exposedAreaMeta
-            tokenOrderedList(:class => "linked-list")
+            tokenOrderedList(:class => "linked-list") {
+              token_map.each do |refpoint|
+                send("net.rptools.maptool.model.Token", :reference => "../../tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token")
+              end
+            } # tokenOrderedList
             initiativeList {
               tokens
               current -1
@@ -204,7 +275,14 @@ module RpTools
           assetMap {
             asset_map.each do |asset_code, refpoint|
               entry {
-                send("net.rptools.lib.MD5Key", :reference => "../../../zone/drawables/net.rptools.maptool.model.drawing.DrawnElement[#{refpoint}]/pen/paint/assetId")
+                case refpoint[0]
+                when 'paint'
+                  send("net.rptools.lib.MD5Key", :reference => "../../../zone/drawables/net.rptools.maptool.model.drawing.DrawnElement[#{refpoint[1]}]/pen/paint/assetId")
+                when 'token'
+                  send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint[1]}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
+                else
+                  # do nothing
+                end
                 null
               } # entry
             end
