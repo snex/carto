@@ -1,0 +1,29 @@
+																						
+	F	F	F	F	F	F	F		F	F	F	F	F	F	F	F	F	F	F			
+	F								F	F	F	F	F	F	F	F	F	F	F			
+	F		F	F	F	F	F	DR	F	F	F	F	F	F	F	F	F	F	F			
+	F								F	F	F	F	F	F	F	F	F	F	F			
+	F	F	F	F	F	F	F	DR	F	F	F	F	F	F	F	F	F	F	F	DL	F	
+	F		F						F	F	F	F	F	F	F	F	F	F	F		F	
+	F		F		F	F	F		F	F	F	F	F	F	F	F	F	F	F		F	
+	F		F		F	F	F		F	F	F	F	F	F	F	F	F	F	F		F	
+	F		F		F	F	F		F	F	F	F	F	F	F	F	F	F	F		F	
+			F		F	F	F		F	F	F	F	F	F	F	F	F	F	F		F	
+	F	F	F	DR	F	F	F		F	F	F	F	F	F	F	F	F	F	F		F	
+	F				F	F	F		DPT										DT		F	
+	F				F	F	F		F		F	F	F	F	F	DL	F		F		F	
+	F								F		F	F	F	F	F		F				F	
+	F	F	F	F	F	F	F	F	F		F	F	F	F	F		F	F	F		F	
+			DB								F	F	F	F	F				F		F	
+	F	F	F	F	F	F	F	F	F		F	F	F	F	F		F		F		F	
+	F	F	F	F	F	F	F	F	F		F				DPT		F		F		F	
+	F	F	F	F	F	F	F	F	F		F	F	F		F	F	F		F		F	
+	F	F	F	F	F	F	F	F	F		F		F		F				F		F	
+	F	F	F	F	F	F	F	F	F		F		F		F				F	F	F	
+	F	F	F	F	F	F	F	F	F				F		F						F	
+	F	F	F	F	F	F	F	F	F	DL	F	F	F		F	F	F	F	F		F	
+	DPT																		F		F	
+	F	F	F	F	F	F	F	F	F		F	F	F	F	F	F	F	F	F		F	
+					F						F		F								F	
+					F	F	F	F	F	F	F		F	F	F	F	F	F	F	F	F	
+																						
