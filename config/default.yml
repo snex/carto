@@ -1,4 +1,13 @@
 F: assets/default/FlagsDark.png
-D: assets/default/Door.png
-DS: assets/default/DoorSecret.png
-DP: assets/default/Door.png
+DT: assets/default/DoorHoriz.png
+DB: assets/default/DoorHoriz.png
+DL: assets/default/DoorVert.png
+DR: assets/default/DoorVert.png
+DST: assets/default/DoorSecretHoriz.png
+DSB: assets/default/DoorSecretHoriz.png
+DSR: assets/default/DoorSecretVert.png
+DSL: assets/default/DoorSecretVert.png
+DPT: assets/default/DoorHoriz.png
+DPB: assets/default/DoorHoriz.png
+DPR: assets/default/DoorVert.png
+DPL: assets/default/DoorVert.png

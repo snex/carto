@@ -10,7 +10,7 @@ module RpTools
 
     def initialize tileset, map = []
       @asset_group = AssetGroup.new tileset
-      @content_file = ContentFile.new map, @asset_group
+      @content_file = ContentFile.new map, @asset_group, tileset
       @properties_file = PropertiesFile.new
     end
 
@@ -27,8 +27,8 @@ module RpTools
         zipfile.get_output_stream("properties.xml") { |f| f.puts(@properties_file.xml_data.to_xml) }
         zipfile.mkdir("assets")
         @asset_group.assets.each do |asset|
-          zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}") { |f| f.puts(asset.asset_xml.to_xml) }
-          zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}#{File.extname(asset_group.assets[0].image_file)}") { |f| f.write(asset.asset_data) }
+          zipfile.get_output_stream("assets/#{asset.asset_md5}") { |f| f.puts(asset.asset_xml.to_xml) }
+          zipfile.get_output_stream("assets/#{asset.asset_md5}#{File.extname(asset.image_file)}") { |f| f.write(asset.asset_data) }
         end
       end
     end
@@ -37,7 +37,8 @@ module RpTools
   class ContentFile
     attr_reader :xml_data
 
-    def initialize map = [], asset_group = []
+    def initialize map = [], asset_group, tileset
+      asset_map = {}
       @xml_data = Nokogiri::XML::Builder.new do
         send("net.rptools.maptool.util.PersistenceUtil_-PersistedMap") {
           zone {
@@ -86,44 +87,44 @@ module RpTools
             drawables(:class => "linked-list") {
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
-                  if tile == 'F'
-                    send("net.rptools.maptool.model.drawing.DrawnElement") {
-                      drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
-                        id_ {
-                          baGUID (0...8).map{65.+(rand(25)).chr}.join
-                        } # id_
-                        layer "BACKGROUND"
-                        shape(:class => "java.awt.Rectangle") {
-                          x j * 25
-                          y_ i * 25
-                          width 25
-                          height 25
-                        } # shape
-                        useAntiAliasing false
-                      } # drawable
-                      pen {
-                        foregroundMode 0
-                        paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                          assetId {
-                            id_ asset_group.assets[0].asset_md5
-                          } # assetId
-                          scale 1.0
-                        } # paint
-                        backgroundMode 0
-                        backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                          assetId {
-                            id_ asset_group.assets[0].asset_md5
-                          } # assetId
-                          scale 1.0
-                        } # backgroundPaint
-                        thickness 1.0
-                        eraser false
-                        opacity 1.0
-                        color 0
-                        backgroundColor 0
-                      } # pen
-                    } # net.rptools.maptool.model.drawing.DrawnElement
-                  end
+                  next if tile.nil?
+                  asset_map[tile] = (i + 1) * (j + 1) unless asset_map.has_key?(tile)
+                  send("net.rptools.maptool.model.drawing.DrawnElement") {
+                    drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
+                      id_ {
+                        baGUID (0...8).map{65.+(rand(25)).chr}.join
+                      } # id_
+                      layer "BACKGROUND"
+                      shape(:class => "java.awt.Rectangle") {
+                        x j * 25
+                        y_ i * 25
+                        width 25
+                        height 25
+                      } # shape
+                      useAntiAliasing false
+                    } # drawable
+                    pen {
+                      foregroundMode 0
+                      paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                        assetId {
+                          id_ asset_group.assets.find { |asset| asset.image_file == tileset[tile] }.asset_md5
+                        } # assetId
+                      scale 1.0
+                      } # paint
+                      backgroundMode 0
+                      backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                        assetId {
+                          id_ asset_group.assets.find { |asset| asset.image_file == tileset[tile] }.asset_md5
+                        } # assetId
+                        scale 1.0
+                      } # backgroundPaint
+                      thickness 1.0
+                      eraser false
+                      opacity 1.0
+                      color 0
+                      backgroundColor 0
+                    } # pen
+                  } # net.rptools.maptool.model.drawing.DrawnElement
                 end
               end
             } # drawables
@@ -198,10 +199,12 @@ module RpTools
             width 0
           } # zone
           assetMap {
-            entry {
-              send("net.rptools.lib.MD5Key", :reference => "../../../zone/drawables/net.rptools.maptool.model.drawing.DrawnElement/pen/paint/assetId")
-              null
-            } # entry
+            asset_map.each do |asset_code, refpoint|
+              entry {
+                send("net.rptools.lib.MD5Key", :reference => "../../../zone/drawables/net.rptools.maptool.model.drawing.DrawnElement[#{refpoint}]/pen/paint/assetId")
+                null
+              } # entry
+            end
           } # assetMap
         } # net.rptools.maptool.util.PersistenceUtil_-PersistedMap
       end
