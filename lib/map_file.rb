@@ -9,19 +9,26 @@ module RpTools
     attr :content_file, :properties_file, :asset_group
 
     def initialize tileset, map = []
-      @asset_group = AssetGroup.new
+      @asset_group = AssetGroup.new tileset
       @content_file = ContentFile.new map, @asset_group
       @properties_file = PropertiesFile.new
     end
 
     def save filename = 'output/new_map.rpmap'
+      exists = false
+      orig_filename = filename
+      i = 1
+      while exists = File.exists?(filename)
+        filename = "output/#{File.basename(orig_filename, '.rpmap')}[#{i}].rpmap"
+        i += 1
+      end
       Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zipfile|
         zipfile.get_output_stream("content.xml") { |f| f.puts(@content_file.xml_data.to_xml) }
         zipfile.get_output_stream("properties.xml") { |f| f.puts(@properties_file.xml_data.to_xml) }
         zipfile.mkdir("assets")
         @asset_group.assets.each do |asset|
           zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}") { |f| f.puts(asset.asset_xml.to_xml) }
-          zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}.png") { |f| f.write(asset.asset_data) }
+          zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}#{File.extname(asset_group.assets[0].image_file)}") { |f| f.write(asset.asset_data) }
         end
       end
     end
@@ -221,18 +228,19 @@ module RpTools
   end
 
   class Asset
-    attr :asset_xml, :asset_data, :asset_md5
+    attr :asset_xml, :asset_data, :asset_md5, :image_file
 
-    def initialize
-      @asset_data = File.open('assets/default/FlagsDark.png', 'rb') { |io| io.read }
+    def initialize image_file
+      @image_file = image_file
+      @asset_data = File.open(image_file, 'rb') { |io| io.read }
       @asset_md5 = Digest::MD5.hexdigest(@asset_data)
       @asset_xml = Nokogiri::XML::Builder.new do |xml|
         xml.send("net.rptools.maptool.model.Asset") {
           xml.id_ {
             xml.id_ @asset_md5
           } # id
-          xml.name "test"
-          xml.extension "png"
+          xml.name File.basename(image_file)
+          xml.extension File.extname(image_file).gsub(/\./, '')
           xml.image
         } # net.rptools.maptool.model.Asset
       end
@@ -242,9 +250,12 @@ module RpTools
   class AssetGroup
     attr :assets
 
-    def initialize
+    def initialize tileset
       @assets = []
-      @assets << Asset.new
+      tileset.each do |code, image_file|
+        @assets << Asset.new(image_file)
+      end
+      @assets.uniq! { |asset| asset.asset_md5 }
     end
   end
 end
