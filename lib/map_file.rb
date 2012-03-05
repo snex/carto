@@ -32,6 +32,10 @@ module RpTools
         end
       end
     end
+
+    def self.generate_guid
+      (0...24).map{65.+(rand(25)).chr}.join
+    end
   end
 
   class ContentFile
@@ -45,7 +49,7 @@ module RpTools
           zone {
             creationTime Time.now.to_i * 1000
             id_ {
-              baGUID (0...8).map{65.+(rand(25)).chr}.join
+              baGUID MapFile.generate_guid
             }
             grid(:class => "net.rptools.maptool.model.SquareGrid") {
               offsetX 0
@@ -80,12 +84,15 @@ module RpTools
                 } # curves
               } # cellShape
             } # grid
-            gridColor -16777216
+            gridColor -1
             imageScaleX 1.0
             imageScaleY 1.0
             tokenVisionDistance 1000
             unitsPerCell 5
-            drawables(:class => "linked-list") {
+            drawables(:class => "linked-list")
+            gmDrawables(:class => "linked-list")
+            objectDrawables(:class => "linked-list")
+            backgroundDrawables(:class => "linked-list") {
               count = 0
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
@@ -96,7 +103,7 @@ module RpTools
                     comment "refpoint #{count}"
                     drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
                       id_ {
-                        baGUID (0...8).map{65.+(rand(25)).chr}.join
+                        baGUID MapFile.generate_guid
                       } # id_
                       layer "BACKGROUND"
                       shape(:class => "java.awt.Rectangle") {
@@ -131,10 +138,7 @@ module RpTools
                   } # net.rptools.maptool.model.drawing.DrawnElement
                 end
               end
-            } # drawables
-            gmDrawables(:class => "linked-list")
-            objectDrawables(:class => "linked-list")
-            backgroundDrawables(:class => "linked-list")
+            } # backgroundDrawables
             labels(:class => "linked-hash-map")
             tokenMap {
               count = 0
@@ -145,16 +149,17 @@ module RpTools
                   token_map << count
                   asset_map[tile] = ['token', count] unless asset_map.has_key?(tile)
                   entry {
+                    token_guid = MapFile.generate_guid
                     send("net.rptools.maptool.model.GUID") {
-                      baGUID (0...8).map{65.+(rand(25)).chr}.join
+                      baGUID token_guid
                     } # net.rptools.maptool.model.GUID
                     send("net.rptools.maptool.model.Token") {
                       id_ {
-                        baGUID (0...8).map{65.+(rand(25)).chr}.join
+                        baGUID token_guid
                       } # id
                       beingImpersonated false
                       exposedAreaGUID {
-                        baGUID (0...8).map{65.+(rand(25)).chr}.join
+                        baGUID MapFile.generate_guid
                       } # exposedAreaGUID
                       imageAssetMap {
                         entry {
@@ -167,11 +172,11 @@ module RpTools
                       x j * 25
                       y_ i * 25
                       z 1
-                      anchorX j * 25
-                      anchorY i * 25
+                      anchorX j
+                      anchorY i
                       sizeScale 1.0
-                      lastX (j + 1) * 25
-                      lastY i * 25
+                      lastX 0
+                      lastY 0
                       snapToScale true
                       width 250
                       height 100
@@ -181,7 +186,7 @@ module RpTools
                         entry {
                           send("java-class", "net.rptools.maptool.model.SquareGrid")
                           send("net.rptools.maptool.model.GUID") {
-                            baGUID (0...8).map{65.+(rand(25)).chr}.join
+                            baGUID MapFile.generate_guid
                           } # net.rptools.maptool.model.GUID
                         } # entry
                       } # sizeMap
@@ -277,7 +282,7 @@ module RpTools
               entry {
                 case refpoint[0]
                 when 'paint'
-                  send("net.rptools.lib.MD5Key", :reference => "../../../zone/drawables/net.rptools.maptool.model.drawing.DrawnElement[#{refpoint[1]}]/pen/paint/assetId")
+                  send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[#{refpoint[1]}]/pen/paint/assetId")
                 when 'token'
                   send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint[1]}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
                 else
