@@ -20,8 +20,8 @@ module RpTools
         zipfile.get_output_stream("properties.xml") { |f| f.puts(@properties_file.xml_data.to_xml) }
         zipfile.mkdir("assets")
         @asset_group.assets.each do |asset|
-          zipfile.get_output_stream("assets/#{Digest::MD5.hexdigest(asset_group.assets[0].asset_data)}") { |f| f.puts(asset.asset_xml.to_xml) }
-          zipfile.get_output_stream("assets/#{Digest::MD5.hexdigest(asset_group.assets[0].asset_data)}.png") { |f| f.write(asset.asset_data) }
+          zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}") { |f| f.puts(asset.asset_xml.to_xml) }
+          zipfile.get_output_stream("assets/#{asset_group.assets[0].asset_md5}.png") { |f| f.write(asset.asset_data) }
         end
       end
     end
@@ -98,14 +98,14 @@ module RpTools
                         foregroundMode 0
                         paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
                           assetId {
-                            id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
+                            id_ asset_group.assets[0].asset_md5
                           } # assetId
                           scale 1.0
                         } # paint
                         backgroundMode 0
                         backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
                           assetId {
-                            id_ Digest::MD5.hexdigest(asset_group.assets[0].asset_data)
+                            id_ asset_group.assets[0].asset_md5
                           } # assetId
                           scale 1.0
                         } # backgroundPaint
@@ -221,14 +221,15 @@ module RpTools
   end
 
   class Asset
-    attr :asset_xml, :asset_data
+    attr :asset_xml, :asset_data, :asset_md5
 
     def initialize
       @asset_data = File.open('assets/default/FlagsDark.png', 'rb') { |io| io.read }
+      @asset_md5 = Digest::MD5.hexdigest(@asset_data)
       @asset_xml = Nokogiri::XML::Builder.new do |xml|
         xml.send("net.rptools.maptool.model.Asset") {
           xml.id_ {
-            xml.id_ Digest::MD5.hexdigest(@asset_data)
+            xml.id_ @asset_md5
           } # id
           xml.name "test"
           xml.extension "png"
