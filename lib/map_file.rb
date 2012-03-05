@@ -172,8 +172,8 @@ module RpTools
                       x j * 25
                       y_ i * 25
                       z 1
-                      anchorX j
-                      anchorY i
+                      anchorX 0
+                      anchorY 0
                       sizeScale 1.0
                       lastX 0
                       lastY 0
@@ -233,7 +233,8 @@ module RpTools
               curves {
                 map.each_with_index do |row, i|
                   row.each_with_index do |tile, j|
-                    if tile != 'F'
+                    case tile
+                    when 'DSB', 'DST', 'DSR', 'DSL', nil
                       send("sun.awt.geom.Order0") {
                         direction 1
                         x  j * 25.0
@@ -257,6 +258,56 @@ module RpTools
                         xmin (j + 1) * 25.0
                         xmax (i + 1) * 25.0
                       } # sun.awt.geom.Order1
+                    when 'DB', 'DT'
+                      send("sun.awt.geom.Order0") {
+                        direction 1
+                        x  j * 25.0
+                        y_ (i + 0.45) * 25.0
+                      } # sun.awt.geom.Order0
+                      send("sun.awt.geom.Order1") {
+                        direction 1
+                        x0 j * 25.0
+                        y0 (i + 0.45) * 25.0
+                        x1 j * 25.0
+                        y1 (i + 0.55) * 25.0
+                        xmin j * 25.0
+                        xmax i * 25.0
+                      } # sun.awt.geom.Order1
+                      send("sun.awt.geom.Order1") {
+                        direction -1
+                        x0 (j + 1) * 25.0
+                        y0 (i + 0.45) * 25.0
+                        x1 (j + 1) * 25.0
+                        y1 (i + 0.55) * 25.0
+                        xmin (j + 1) * 25.0
+                        xmax (i + 1) * 25.0
+                      } # sun.awt.geom.Order1
+                    when 'DR', 'DL'
+                      send("sun.awt.geom.Order0") {
+                        direction 1
+                        x  (j + 0.45) * 25.0
+                        y_ i * 25.0
+                      } # sun.awt.geom.Order0
+                      send("sun.awt.geom.Order1") {
+                        direction 1
+                        x0 (j + 0.45) * 25.0
+                        y0 i * 25.0
+                        x1 (j + 0.45) * 25.0
+                        y1 (i + 1) * 25.0
+                        xmin j * 25.0
+                        xmax i * 25.0
+                      } # sun.awt.geom.Order1
+                      send("sun.awt.geom.Order1") {
+                        direction -1
+                        x0 (j + 0.55) * 25.0
+                        y0 i * 25.0
+                        x1 (j + 0.55) * 25.0
+                        y1 (i + 1) * 25.0
+                        xmin (j + 1) * 25.0
+                        xmax (i + 1) * 25.0
+                      } # sun.awt.geom.Order1
+                    else
+                      # do nothing
                     end
                   end
                 end
