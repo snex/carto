@@ -8,7 +8,7 @@ module RpTools
 
     attr :content_file, :properties_file, :asset_group
 
-    def initialize map = []
+    def initialize tileset, map = []
       @asset_group = AssetGroup.new
       @content_file = ContentFile.new map, @asset_group
       @properties_file = PropertiesFile.new

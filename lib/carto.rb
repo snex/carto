@@ -20,8 +20,7 @@ class Carto
       map << row
     end
 
-    build_tileset default_options[:tileset]
-    @map_file = RpTools::MapFile.new map
+    @map_file = RpTools::MapFile.new build_tileset(default_options[:tileset]), map
   end
 
   def write_map
@@ -31,6 +30,6 @@ class Carto
   private
 
   def build_tileset tileset_name
-    yaml = YAML.load_file("config/#{tileset_name}.yml")
+    YAML.load_file("config/#{tileset_name}.yml")
   end
 end
