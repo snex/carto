@@ -85,11 +85,14 @@ module RpTools
             tokenVisionDistance 1000
             unitsPerCell 5
             drawables(:class => "linked-list") {
+              count = 0
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
                   next if tile.nil?
-                  asset_map[tile] = (i + 1) * (j + 1) unless asset_map.has_key?(tile)
+                  count += 1
+                  asset_map[tile] = count unless asset_map.has_key?(tile)
                   send("net.rptools.maptool.model.drawing.DrawnElement") {
+                    comment "refpoint #{count}"
                     drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
                       id_ {
                         baGUID (0...8).map{65.+(rand(25)).chr}.join
