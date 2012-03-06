@@ -6,10 +6,10 @@ require 'awesome_print'
 
 class Carto
 
-  attr :tileset, :map_file
+  attr :tileset, :map_file, :output_file
 
   def initialize options = {}
-    default_options = { :tileset => 'default' }
+    default_options = { :tileset => 'default', :output_file => 'new_map.rpmap' }
     default_options.merge!(options)
 
     if !default_options.has_key?(:map_file)
@@ -20,11 +20,12 @@ class Carto
       map << row
     end
 
+    @output_file = default_options[:output_file]
     @map_file = RpTools::MapFile.new build_tileset(default_options[:tileset]), map
   end
 
   def write_map
-    @map_file.save
+    @map_file.save "output/#{@output_file}"
   end
 
   private

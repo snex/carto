@@ -14,7 +14,7 @@ module RpTools
       @properties_file = PropertiesFile.new
     end
 
-    def save filename = 'output/new_map.rpmap'
+    def save filename
       exists = false
       orig_filename = filename
       i = 1
