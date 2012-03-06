@@ -1,7 +1,7 @@
 																						
 	F	F	F	F	F	F	F		F	F	F	F	F	F	F	F	F	F	F			
 	F								F	F	F	F	F	F	F	F	F	F	F			
-	F		F	F	F	F	F	DR	F	F	F	F	F	F	F	F	F	F	F			
+	F		F	F	F	F	F	DSR	F	F	F	F	F	F	F	F	F	F	F			
 	F								F	F	F	F	F	F	F	F	F	F	F			
 	F	F	F	F	F	F	F	DR	F	F	F	F	F	F	F	F	F	F	F	DL	F	
 	F		F						F	F	F	F	F	F	F	F	F	F	F		F	
@@ -14,7 +14,7 @@
 	F				F	F	F		F		F	F	F	F	F	DL	F		F		F	
 	F								F		F	F	F	F	F		F				F	
 	F	F	F	F	F	F	F	F	F		F	F	F	F	F		F	F	F		F	
-			DB								F	F	F	F	F				F		F	
+			DSB								F	F	F	F	F				F		F	
 	F	F	F	F	F	F	F	F	F		F	F	F	F	F		F		F		F	
 	F	F	F	F	F	F	F	F	F		F				DPT		F		F		F	
 	F	F	F	F	F	F	F	F	F		F	F	F		F	F	F		F		F	

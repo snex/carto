@@ -42,7 +42,6 @@ module RpTools
     attr_reader :xml_data
 
     def initialize map = [], asset_group, tileset
-      asset_map = {}
       token_map = []
       @xml_data = Nokogiri::XML::Builder.new do
         send("net.rptools.maptool.util.PersistenceUtil_-PersistedMap") {
@@ -93,14 +92,10 @@ module RpTools
             gmDrawables(:class => "linked-list")
             objectDrawables(:class => "linked-list")
             backgroundDrawables(:class => "linked-list") {
-              count = 0
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
-                  next if tile.nil? || tile != 'F'
-                  count += 1
-                  asset_map[tile] = ['paint', count] unless asset_map.has_key?(tile)
+                  next if tile.nil?
                   send("net.rptools.maptool.model.drawing.DrawnElement") {
-                    comment "refpoint #{count}"
                     drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
                       id_ {
                         baGUID MapFile.generate_guid
@@ -118,14 +113,14 @@ module RpTools
                       foregroundMode 0
                       paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
                         assetId {
-                          id_ asset_group.assets.find { |asset| asset.image_file == tileset[tile] }.asset_md5
+                          id_ asset_group.find_asset_by_tile('F').asset_md5
                         } # assetId
                       scale 1.0
                       } # paint
                       backgroundMode 0
                       backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
                         assetId {
-                          id_ asset_group.assets.find { |asset| asset.image_file == tileset[tile] }.asset_md5
+                          id_ asset_group.find_asset_by_tile('F').asset_md5
                         } # assetId
                         scale 1.0
                       } # backgroundPaint
@@ -147,7 +142,6 @@ module RpTools
                   next if tile.nil? || tile == 'F'
                   count += 1
                   token_map << count
-                  asset_map[tile] = ['token', count] unless asset_map.has_key?(tile)
                   entry {
                     token_guid = MapFile.generate_guid
                     send("net.rptools.maptool.model.GUID") {
@@ -165,16 +159,24 @@ module RpTools
                         entry {
                           null
                           send("net.rptools.lib.MD5Key") {
-                            id_ asset_group.assets.find { |asset| asset.image_file == tileset[tile] }.asset_md5
+                            id_ asset_group.find_asset_by_tile(tile).asset_md5
                           } # net.rptools.lib.MD5Key
                         } # entry
                       } # imageAssetMap
                       x j * 25
                       y_ i * 25
                       z 1
-                      anchorX 0
-                      anchorY 0
-                      sizeScale 1.0
+                      case tile
+                      when /.*(B|T)/
+                        anchorX 0
+                        anchorY -12
+                      when /.*(L|R)/
+                        anchorX -12
+                        anchorY 0
+                      else
+                        # do nothing
+                      end
+                      sizeScale 2.0
                       lastX 0
                       lastY 0
                       snapToScale true
@@ -193,7 +195,16 @@ module RpTools
                       snapToGrid true
                       isVisible true
                       visibleOnlyToOwner false
-                      name "Door"
+                      case tile
+                      when 'DB', 'DT', 'DR', 'DL'
+                        name 'Door'
+                      when 'DPB', 'DPT', 'DPR', 'DPL'
+                        name 'Portcullis'
+                      when 'DSB', 'DST', 'DSR', 'DSL'
+                        name 'Secret Door'
+                      else
+                        # do nothing
+                      end
                       ownerType 0
                       tokenShape "TOP_DOWN"
                       tokenType "NPC"
@@ -202,6 +213,16 @@ module RpTools
                       isFlippedX false
                       isFlippedY false
                       hasSight false
+                      case tile
+                      when 'DB', 'DT', 'DR', 'DL'
+                        notes 'Door'
+                      when 'DPB', 'DPT', 'DPR', 'DPL'
+                        notes 'Portcullis'
+                      when 'DSB', 'DST', 'DSR', 'DSL'
+                        gmNotes 'Secret Door'
+                      else
+                        # do nothing
+                      end
                       state
                     } # net.rptools.maptool.model.Token
                   } # entry
@@ -329,16 +350,13 @@ module RpTools
             width 0
           } # zone
           assetMap {
-            asset_map.each do |asset_code, refpoint|
+            entry {
+              send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement/pen/paint/assetId")
+              null
+            } # entry
+            token_map.each do |refpoint|
               entry {
-                case refpoint[0]
-                when 'paint'
-                  send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[#{refpoint[1]}]/pen/paint/assetId")
-                when 'token'
-                  send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint[1]}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
-                else
-                  # do nothing
-                end
+                send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
                 null
               } # entry
             end
@@ -388,14 +406,19 @@ module RpTools
   end
 
   class AssetGroup
-    attr :assets
+    attr :assets, :tileset
 
     def initialize tileset
+      @tileset = tileset
       @assets = []
-      tileset.each do |code, image_file|
+      @tileset.each do |code, image_file|
         @assets << Asset.new(image_file)
       end
-      @assets.uniq! { |asset| asset.asset_md5 }
+      @assets.uniq! { |asset| [asset.asset_md5, asset.image_file] }
+    end
+
+    def find_asset_by_tile tile
+      @assets.find { |asset| asset.image_file == @tileset[tile] }
     end
   end
 end
