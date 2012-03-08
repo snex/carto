@@ -1,5 +1,4 @@
 require 'yaml'
-require 'chunky_png'
 require 'csv'
 require 'map_file'
 require 'awesome_print'
