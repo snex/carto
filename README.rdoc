@@ -8,3 +8,4 @@ Usage: ruby carto.rb -m map-file -o output_file -t tileset
     -m, --map-file [MAP_FILE]        TSV Map File
     -o, --output-file [OUTPUT_FILE]  Output rpmap file
     -t, --tileset [TILESET]          Tileset
+    -v, --version [VERSION]          MapTool version
