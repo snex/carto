@@ -18,6 +18,10 @@ optparse = OptionParser.new do |opts|
   opts.on("-t", "--tileset [TILESET]", "Tileset") do |t|
     options[:tileset] = t
   end
+
+  opts.on("-v", "--version [VERSION]", "MapTool Version") do |t|
+    options[:version] = t
+  end
 end
 
 begin

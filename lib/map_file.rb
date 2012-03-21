@@ -8,10 +8,10 @@ module RpTools
 
     attr :content_file, :properties_file, :asset_group
 
-    def initialize tileset, map = []
+    def initialize tileset, version, map = []
       @asset_group = AssetGroup.new tileset
       @content_file = ContentFile.new map, @asset_group, tileset
-      @properties_file = PropertiesFile.new
+      @properties_file = PropertiesFile.new version
     end
 
     def save filename
@@ -369,7 +369,7 @@ module RpTools
   class PropertiesFile
     attr_reader :xml_data
 
-    def initialize
+    def initialize version
       @xml_data = Nokogiri::XML::Builder.new do
         map {
           entry {
@@ -378,7 +378,7 @@ module RpTools
           } # entry
           entry {
             string "version"
-            string "1.3.b87"
+            string version
           } # entry
         } # map
       end

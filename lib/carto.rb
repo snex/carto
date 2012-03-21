@@ -8,7 +8,10 @@ class Carto
   attr :tileset, :map_file, :output_file
 
   def initialize options = {}
-    default_options = { :tileset => 'default', :output_file => 'new_map.rpmap' }
+    default_options = { :tileset     => 'default',
+                        :output_file => 'new_map.rpmap',
+                        :version     => '1.3.b88'
+                      }
     default_options.merge!(options)
 
     if !default_options.has_key?(:map_file)
@@ -20,7 +23,7 @@ class Carto
     end
 
     @output_file = default_options[:output_file]
-    @map_file = RpTools::MapFile.new build_tileset(default_options[:tileset]), map
+    @map_file = RpTools::MapFile.new build_tileset(default_options[:tileset]), default_options[:version], map
   end
 
   def write_map
