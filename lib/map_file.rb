@@ -163,19 +163,19 @@ module RpTools
                           } # net.rptools.lib.MD5Key
                         } # entry
                       } # imageAssetMap
-                      x j * 25
-                      y_ i * 25
-                      z 1
                       case tile
                       when /.*(B|T)/
-                        anchorX 0
-                        anchorY -12
+                        x j * 25
+                        y_ i * 25 - 12
                       when /.*(L|R)/
-                        anchorX -12
-                        anchorY 0
+                        x j * 25 - 12
+                        y_ i * 25
                       else
                         # do nothing
                       end
+                      z 1
+                      anchorX 0
+                      anchorY 0
                       sizeScale 2.0
                       lastX 0
                       lastY 0
@@ -192,7 +192,7 @@ module RpTools
                           } # net.rptools.maptool.model.GUID
                         } # entry
                       } # sizeMap
-                      snapToGrid true
+                      snapToGrid false
                       isVisible true
                       visibleOnlyToOwner false
                       case tile
