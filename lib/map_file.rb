@@ -115,7 +115,7 @@ module RpTools
                         assetId {
                           id_ asset_group.find_asset_by_tile('F').asset_md5
                         } # assetId
-                      scale 1.0
+                        scale 1.0
                       } # paint
                       backgroundMode 0
                       backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
@@ -131,8 +131,74 @@ module RpTools
                       backgroundColor 0
                     } # pen
                   } # net.rptools.maptool.model.drawing.DrawnElement
-                end
-              end
+                end # row.each_with_index
+              end # map.each_with_index
+              map.each_with_index do |row, i|
+                row.each_with_index do |tile, j|
+                  {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}.each do |dir, neighbor|
+                    next if i - 1 < 0 || i + 1 >= map.size || j - 1 < 0 || j + 1 >= row.size
+                    if ([:n, :s].include?(dir) && (map[neighbor][j].nil? || map[neighbor][j] =~ /S/)) || 
+                       ([:w, :e].include?(dir) && (map[i][neighbor].nil? || map[i][neighbor] =~ /S/))
+                      send("net.rptools.maptool.model.drawing.DrawnElement") {
+                        drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
+                          id_ {
+                            baGUID MapFile.generate_guid
+                          } # id_
+                          layer "BACKGROUND"
+                          shape(:class => "java.awt.Rectangle") {
+                            case dir
+                            when :n
+                              x j * 25 - 5
+                              y_ i * 25
+                              width 35
+                              height 5
+                            when :s
+                              x j * 25 - 5
+                              y_ neighbor * 25 - 5
+                              width 35
+                              height 5
+                            when :w
+                              x j * 25
+                              y_ i * 25 - 5
+                              width 5
+                              height 35
+                            when :e
+                              x neighbor * 25 - 5
+                              y_ i * 25 - 5
+                              width 5
+                              height 35
+                            else
+                              # do nothing
+                            end
+                          } # shape
+                          useAntiAliasing false
+                        } # drawable
+                        pen {
+                          foregroundMode 0
+                          paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                            assetId {
+                              id_ asset_group.find_asset_by_tile('W').asset_md5
+                            } # assetId
+                          scale 1.0
+                          } # paint
+                          backgroundMode 0
+                          backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                            assetId {
+                              id_ asset_group.find_asset_by_tile('W').asset_md5
+                            } # assetId
+                            scale 1.0
+                          } # backgroundPaint
+                          thickness 1.0
+                          eraser false
+                          opacity 1.0
+                          color 0
+                          backgroundColor 0
+                        } # pen
+                      } # net.rptools.maptool.model.drawing.DrawnElement
+                    end # if
+                  end # {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}
+                end # row.each_with_index
+              end # map.each_with_index
             } # backgroundDrawables
             labels(:class => "linked-hash-map")
             tokenMap {
@@ -350,6 +416,10 @@ module RpTools
             width 0
           } # zone
           assetMap {
+            entry {
+              send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[2]/pen/backgroundPaint/assetId")
+              null
+            } # entry
             entry {
               send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement/pen/paint/assetId")
               null
