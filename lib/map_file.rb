@@ -39,398 +39,256 @@ module RpTools
   end
 
   class ContentFile
-    attr_reader :xml_data
+    attr_reader :map, :asset_group, :tileset, :xml_data
 
     def initialize map = [], asset_group, tileset
+      @map = map
+      @asset_group = asset_group
+      @tileset = tileset
       token_map = []
-      @xml_data = Nokogiri::XML::Builder.new do
-        send("net.rptools.maptool.util.PersistenceUtil_-PersistedMap") {
-          zone {
-            creationTime Time.now.to_i * 1000
-            id_ {
-              baGUID MapFile.generate_guid
+      @xml_data = Nokogiri::XML::Builder.new do |xml|
+        xml.send("net.rptools.maptool.util.PersistenceUtil_-PersistedMap") {
+          xml.zone {
+            xml.creationTime Time.now.to_i * 1000
+            xml.id_ {
+              xml.baGUID MapFile.generate_guid
             }
-            grid(:class => "net.rptools.maptool.model.SquareGrid") {
-              offsetX 0
-              offsetY 0
-              size 25
-              zone(:reference => "../..")
-              cellShape {
-                curves {
-                  send("sun.awt.geom.Order0") {
-                    direction 1
-                    x 0.0
-                    y_ 0.0
+            xml.grid(:class => "net.rptools.maptool.model.SquareGrid") {
+              xml.offsetX 0
+              xml.offsetY 0
+              xml.size 25
+              xml.zone(:reference => "../..")
+              xml.cellShape {
+                xml.curves {
+                  xml.send("sun.awt.geom.Order0") {
+                    xml.direction 1
+                    xml.x 0.0
+                    xml.y_ 0.0
                   } # sun.awt.geom.Order0
-                  send("sun.awt.geom.Order1") {
-                    direction 1
-                    x0 0.0
-                    y0 0.0
-                    x1 0.0
-                    y1 25.0
-                    xmin 0.0
-                    xmax 0.0
+                  xml.send("sun.awt.geom.Order1") {
+                    xml.direction 1
+                    xml.x0 0.0
+                    xml.y0 0.0
+                    xml.x1 0.0
+                    xml.y1 25.0
+                    xml.xmin 0.0
+                    xml.xmax 0.0
                   } # sun.awt.geom.Order1
-                  send("sun.awt.geom.Order1") {
-                    direction -1
-                    x0 25.0
-                    y0 0.0
-                    x1 25.0
-                    y1 25.0
-                    xmin 25.0
-                    xmax 25.0
+                  xml.send("sun.awt.geom.Order1") {
+                    xml.direction -1
+                    xml.x0 25.0
+                    xml.y0 0.0
+                    xml.x1 25.0
+                    xml.y1 25.0
+                    xml.xmin 25.0
+                    xml.xmax 25.0
                   } # sun.awt.geom.Order1
                 } # curves
               } # cellShape
             } # grid
-            gridColor -1
-            imageScaleX 1.0
-            imageScaleY 1.0
-            tokenVisionDistance 1000
-            unitsPerCell 5
-            drawables(:class => "linked-list")
-            gmDrawables(:class => "linked-list")
-            objectDrawables(:class => "linked-list")
-            backgroundDrawables(:class => "linked-list") {
-              ['F', 'W'].each do |paint|
-                send("net.rptools.maptool.model.drawing.DrawnElement") {
-                  drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
-                    id_ {
-                      baGUID MapFile.generate_guid
-                    } # id
-                    layer "BACKGROUND"
-                    shape(:class => "java.awt.Rectangle") {
-                      x -100
-                      y_ -100
-                      width 10
-                      height 10
-                    } # shape
-                    useAntiAliasing false
-                  } # drawable
-                  pen {
-                    foregroundMode 0
-                    paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                      assetId {
-                        id_ asset_group.find_asset_by_tile(paint).asset_md5
-                      } # assetId
-                      scale 1.0
-                    } # paint
-                    backgroundMode 0
-                    backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                      assetId {
-                        id_ asset_group.find_asset_by_tile(paint).asset_md5
-                      } # assetId
-                      scale 1.0
-                    } # backgroundPaint
-                    thickness 1.0
-                    eraser false
-                    opacity 1.0
-                    color 0
-                    backgroundColor 0
-                  } # pen
-                } # send("net.rptools.maptool.model.drawing.DrawnElement")
-              end # ['F', 'W'].each
-              map.each_with_index do |row, i|
-                row.each_with_index do |tile, j|
-                  next if tile.nil?
-                  send("net.rptools.maptool.model.drawing.DrawnElement") {
-                    drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
-                      id_ {
-                        baGUID MapFile.generate_guid
-                      } # id_
-                      layer "BACKGROUND"
-                      shape(:class => "java.awt.Rectangle") {
-                        x j * 25
-                        y_ i * 25
-                        width 25
-                        height 25
-                      } # shape
-                      useAntiAliasing false
-                    } # drawable
-                    pen {
-                      foregroundMode 0
-                      paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                        assetId {
-                          id_ asset_group.find_asset_by_tile('F').asset_md5
-                        } # assetId
-                        scale 1.0
-                      } # paint
-                      backgroundMode 0
-                      backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                        assetId {
-                          id_ asset_group.find_asset_by_tile('F').asset_md5
-                        } # assetId
-                        scale 1.0
-                      } # backgroundPaint
-                      thickness 1.0
-                      eraser false
-                      opacity 1.0
-                      color 0
-                      backgroundColor 0
-                    } # pen
-                  } # net.rptools.maptool.model.drawing.DrawnElement
-                end # row.each_with_index
-              end # map.each_with_index
-              map.each_with_index do |row, i|
-                row.each_with_index do |tile, j|
-                  next if tile.nil?
-                  {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}.each do |dir, neighbor|
-                    next if i - 1 < 0 || i + 1 >= map.size || j - 1 < 0 || j + 1 >= row.size
-                    if ([:n, :s].include?(dir) && (map[neighbor][j].nil? || map[neighbor][j] =~ /S/)) || 
-                       ([:w, :e].include?(dir) && (map[i][neighbor].nil? || map[i][neighbor] =~ /S/))
-                      send("net.rptools.maptool.model.drawing.DrawnElement") {
-                        drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
-                          id_ {
-                            baGUID MapFile.generate_guid
-                          } # id_
-                          layer "BACKGROUND"
-                          shape(:class => "java.awt.Rectangle") {
-                            case dir
-                            when :n
-                              x j * 25 - 5
-                              y_ i * 25
-                              width 35
-                              height 3
-                            when :s
-                              x j * 25 - 5
-                              y_ neighbor * 25 - 3
-                              width 35
-                              height 3
-                            when :w
-                              x j * 25
-                              y_ i * 25 - 5
-                              width 3
-                              height 35
-                            when :e
-                              x neighbor * 25 - 3
-                              y_ i * 25 - 5
-                              width 3
-                              height 35
-                            else
-                              # do nothing
-                            end
-                          } # shape
-                          useAntiAliasing false
-                        } # drawable
-                        pen {
-                          foregroundMode 0
-                          paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                            assetId {
-                              id_ asset_group.find_asset_by_tile('W').asset_md5
-                            } # assetId
-                          scale 1.0
-                          } # paint
-                          backgroundMode 0
-                          backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
-                            assetId {
-                              id_ asset_group.find_asset_by_tile('W').asset_md5
-                            } # assetId
-                            scale 1.0
-                          } # backgroundPaint
-                          thickness 1.0
-                          eraser false
-                          opacity 1.0
-                          color 0
-                          backgroundColor 0
-                        } # pen
-                      } # net.rptools.maptool.model.drawing.DrawnElement
-                    end # if
-                  end # {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}
-                end # row.each_with_index
-              end # map.each_with_index
+            xml.gridColor -1
+            xml.imageScaleX 1.0
+            xml.imageScaleY 1.0
+            xml.tokenVisionDistance 1000
+            xml.unitsPerCell 5
+            xml.drawables(:class => "linked-list")
+            xml.gmDrawables(:class => "linked-list")
+            xml.objectDrawables(:class => "linked-list")
+            xml.backgroundDrawables(:class => "linked-list") {
+              draw_background xml
             } # backgroundDrawables
-            labels(:class => "linked-hash-map")
-            tokenMap {
+            xml.labels(:class => "linked-hash-map")
+            xml.tokenMap {
               count = 0
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
                   next if tile.nil? || tile == 'F'
                   count += 1
                   token_map << count
-                  entry {
+                  xml.entry {
                     token_guid = MapFile.generate_guid
-                    send("net.rptools.maptool.model.GUID") {
-                      baGUID token_guid
+                    xml.send("net.rptools.maptool.model.GUID") {
+                      xml.baGUID token_guid
                     } # net.rptools.maptool.model.GUID
-                    send("net.rptools.maptool.model.Token") {
-                      id_ {
-                        baGUID token_guid
+                    xml.send("net.rptools.maptool.model.Token") {
+                      xml.id_ {
+                        xml.baGUID token_guid
                       } # id
-                      beingImpersonated false
-                      exposedAreaGUID {
-                        baGUID MapFile.generate_guid
+                      xml.beingImpersonated false
+                      xml.exposedAreaGUID {
+                        xml.baGUID MapFile.generate_guid
                       } # exposedAreaGUID
-                      imageAssetMap {
-                        entry {
-                          null
-                          send("net.rptools.lib.MD5Key") {
-                            id_ asset_group.find_asset_by_tile(tile).asset_md5
+                      xml.imageAssetMap {
+                        xml.entry {
+                          xml.null
+                          xml.send("net.rptools.lib.MD5Key") {
+                            xml.id_ asset_group.find_asset_by_tile(tile).asset_md5
                           } # net.rptools.lib.MD5Key
                         } # entry
                       } # imageAssetMap
                       case tile
                       when /.*(B|T)/
-                        x j * 25
-                        y_ i * 25 - 12
+                        xml.x j * 25
+                        xml.y_ i * 25 - 12
                       when /.*(L|R)/
-                        x j * 25 - 12
-                        y_ i * 25
+                        xml.x j * 25 - 12
+                        xml.y_ i * 25
                       else
                         # do nothing
                       end
-                      z 1
-                      anchorX 0
-                      anchorY 0
-                      sizeScale 2.0
-                      lastX 0
-                      lastY 0
-                      snapToScale true
-                      width 250
-                      height 100
-                      scaleX 1.0
-                      scaleY 1.0
-                      sizeMap {
-                        entry {
-                          send("java-class", "net.rptools.maptool.model.SquareGrid")
-                          send("net.rptools.maptool.model.GUID") {
-                            baGUID MapFile.generate_guid
+                      xml.z 1
+                      xml.anchorX 0
+                      xml.anchorY 0
+                      xml.sizeScale 2.0
+                      xml.lastX 0
+                      xml.lastY 0
+                      xml.snapToScale true
+                      xml.width 250
+                      xml.height 100
+                      xml.scaleX 1.0
+                      xml.scaleY 1.0
+                      xml.sizeMap {
+                        xml.entry {
+                          xml.send("java-class", "net.rptools.maptool.model.SquareGrid")
+                          xml.send("net.rptools.maptool.model.GUID") {
+                            xml.baGUID MapFile.generate_guid
                           } # net.rptools.maptool.model.GUID
                         } # entry
                       } # sizeMap
-                      snapToGrid false
-                      isVisible true
-                      visibleOnlyToOwner false
+                      xml.snapToGrid false
+                      xml.isVisible true
+                      xml.visibleOnlyToOwner false
                       case tile
                       when 'DB', 'DT', 'DR', 'DL'
-                        name 'Door'
+                        xml.name 'Door'
                       when 'DPB', 'DPT', 'DPR', 'DPL'
-                        name 'Portcullis'
+                        xml.name 'Portcullis'
                       when 'DSB', 'DST', 'DSR', 'DSL'
-                        name 'Secret Door'
+                        xml.name 'Secret Door'
                       else
                         # do nothing
                       end
-                      ownerType 0
-                      tokenShape "TOP_DOWN"
-                      tokenType "NPC"
-                      layer "OBJECT"
-                      propertyType "Basic"
-                      isFlippedX false
-                      isFlippedY false
-                      hasSight false
+                      xml.ownerType 0
+                      xml.tokenShape "TOP_DOWN"
+                      xml.tokenType "NPC"
+                      xml.layer "OBJECT"
+                      xml.propertyType "Basic"
+                      xml.isFlippedX false
+                      xml.isFlippedY false
+                      xml.hasSight false
                       case tile
                       when 'DB', 'DT', 'DR', 'DL'
-                        notes 'Door'
+                        xml.notes 'Door'
                       when 'DPB', 'DPT', 'DPR', 'DPL'
-                        notes 'Portcullis'
+                        xml.notes 'Portcullis'
                       when 'DSB', 'DST', 'DSR', 'DSL'
-                        gmNotes 'Secret Door'
+                        xml.gmNotes 'Secret Door'
                       else
                         # do nothing
                       end
-                      state
+                      xml.state
                     } # net.rptools.maptool.model.Token
                   } # entry
                 end
               end
             } # tokenMap
-            exposedAreaMeta
-            tokenOrderedList(:class => "linked-list") {
+            xml.exposedAreaMeta
+            xml.tokenOrderedList(:class => "linked-list") {
               token_map.each do |refpoint|
-                send("net.rptools.maptool.model.Token", :reference => "../../tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token")
+                xml.send("net.rptools.maptool.model.Token", :reference => "../../tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token")
               end
             } # tokenOrderedList
-            initiativeList {
-              tokens
-              current -1
-              round -1
-              zoneId(:reference => "../../id")
-              fullUpdate false
-              hideNPC false
+            xml.initiativeList {
+              xml.tokens
+              xml.current -1
+              xml.round -1
+              xml.zoneId(:reference => "../../id")
+              xml.fullUpdate false
+              xml.hideNPC true
             } # initiativeList
-            exposedArea {
-              curves
+            xml.exposedArea {
+              xml.curves
             } # exposedArea
-            hasFog true
-            fogPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
-              color -16777216
+            xml.hasFog true
+            xml.fogPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
+              xml.color -16777216
             } # fogPaint
-            topology {
-              curves {
+            xml.topology {
+              xml.curves {
                 map.each_with_index do |row, i|
                   row.each_with_index do |tile, j|
                     case tile
                     when 'DSB', 'DST', 'DSR', 'DSL', nil
-                      send("sun.awt.geom.Order0") {
-                        direction 1
-                        x  j * 25.0
-                        y_ i * 25.0
+                      xml.send("sun.awt.geom.Order0") {
+                        xml.direction 1
+                        xml.x  j * 25.0
+                        xml.y_ i * 25.0
                       } # sun.awt.geom.Order0
-                      send("sun.awt.geom.Order1") {
-                        direction 1
-                        x0 j * 25.0
-                        y0 i * 25.0
-                        x1 j * 25.0
-                        y1 (i + 1) * 25.0
-                        xmin j * 25.0
-                        xmax i * 25.0
+                      xml.send("sun.awt.geom.Order1") {
+                        xml.direction 1
+                        xml.x0 j * 25.0
+                        xml.y0 i * 25.0
+                        xml.x1 j * 25.0
+                        xml.y1 (i + 1) * 25.0
+                        xml.xmin j * 25.0
+                        xml.xmax i * 25.0
                       } # sun.awt.geom.Order1
-                      send("sun.awt.geom.Order1") {
-                        direction -1
-                        x0 (j + 1) * 25.0
-                        y0 i * 25.0
-                        x1 (j + 1) * 25.0
-                        y1 (i + 1) * 25.0
-                        xmin (j + 1) * 25.0
-                        xmax (i + 1) * 25.0
+                      xml.send("sun.awt.geom.Order1") {
+                        xml.direction -1
+                        xml.x0 (j + 1) * 25.0
+                        xml.y0 i * 25.0
+                        xml.x1 (j + 1) * 25.0
+                        xml.y1 (i + 1) * 25.0
+                        xml.xmin (j + 1) * 25.0
+                        xml.xmax (i + 1) * 25.0
                       } # sun.awt.geom.Order1
                     when 'DB', 'DT'
-                      send("sun.awt.geom.Order0") {
-                        direction 1
-                        x  j * 25.0
-                        y_ (i + 0.45) * 25.0
+                      xml.send("sun.awt.geom.Order0") {
+                        xml.direction 1
+                        xml.x  j * 25.0
+                        xml.y_ (i + 0.45) * 25.0
                       } # sun.awt.geom.Order0
-                      send("sun.awt.geom.Order1") {
-                        direction 1
-                        x0 j * 25.0
-                        y0 (i + 0.45) * 25.0
-                        x1 j * 25.0
-                        y1 (i + 0.55) * 25.0
-                        xmin j * 25.0
-                        xmax i * 25.0
+                      xml.send("sun.awt.geom.Order1") {
+                        xml.direction 1
+                        xml.x0 j * 25.0
+                        xml.y0 (i + 0.45) * 25.0
+                        xml.x1 j * 25.0
+                        xml.y1 (i + 0.55) * 25.0
+                        xml.xmin j * 25.0
+                        xml.xmax i * 25.0
                       } # sun.awt.geom.Order1
-                      send("sun.awt.geom.Order1") {
-                        direction -1
-                        x0 (j + 1) * 25.0
-                        y0 (i + 0.45) * 25.0
-                        x1 (j + 1) * 25.0
-                        y1 (i + 0.55) * 25.0
-                        xmin (j + 1) * 25.0
-                        xmax (i + 1) * 25.0
+                      xml.send("sun.awt.geom.Order1") {
+                        xml.direction -1
+                        xml.x0 (j + 1) * 25.0
+                        xml.y0 (i + 0.45) * 25.0
+                        xml.x1 (j + 1) * 25.0
+                        xml.y1 (i + 0.55) * 25.0
+                        xml.xmin (j + 1) * 25.0
+                        xml.xmax (i + 1) * 25.0
                       } # sun.awt.geom.Order1
                     when 'DR', 'DL'
-                      send("sun.awt.geom.Order0") {
-                        direction 1
-                        x  (j + 0.45) * 25.0
-                        y_ i * 25.0
+                      xml.send("sun.awt.geom.Order0") {
+                        xml.direction 1
+                        xml.x  (j + 0.45) * 25.0
+                        xml.y_ i * 25.0
                       } # sun.awt.geom.Order0
-                      send("sun.awt.geom.Order1") {
-                        direction 1
-                        x0 (j + 0.45) * 25.0
-                        y0 i * 25.0
-                        x1 (j + 0.45) * 25.0
-                        y1 (i + 1) * 25.0
-                        xmin j * 25.0
-                        xmax i * 25.0
+                      xml.send("sun.awt.geom.Order1") {
+                        xml.direction 1
+                        xml.x0 (j + 0.45) * 25.0
+                        xml.y0 i * 25.0
+                        xml.x1 (j + 0.45) * 25.0
+                        xml.y1 (i + 1) * 25.0
+                        xml.xmin j * 25.0
+                        xml.xmax i * 25.0
                       } # sun.awt.geom.Order1
-                      send("sun.awt.geom.Order1") {
-                        direction -1
-                        x0 (j + 0.55) * 25.0
-                        y0 i * 25.0
-                        x1 (j + 0.55) * 25.0
-                        y1 (i + 1) * 25.0
-                        xmin (j + 1) * 25.0
-                        xmax (i + 1) * 25.0
+                      xml.send("sun.awt.geom.Order1") {
+                        xml.direction -1
+                        xml.x0 (j + 0.55) * 25.0
+                        xml.y0 i * 25.0
+                        xml.x1 (j + 0.55) * 25.0
+                        xml.y1 (i + 1) * 25.0
+                        xml.xmin (j + 1) * 25.0
+                        xml.xmax (i + 1) * 25.0
                       } # sun.awt.geom.Order1
                     else
                       # do nothing
@@ -439,37 +297,125 @@ module RpTools
                 end
               } # curves
             } # topology
-            backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
-              color -16777216
+            xml.backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
+              xml.color -16777216
             } # backgroundPaint
-            boardPosition {
-              x 0
-              y_ 0
+            xml.boardPosition {
+              xml.x 0
+              xml.y_ 0
             } # boardPosition
-            drawBoard true
-            boardChanged false
-            name "Grasslands"
-            isVisible true
-            visionType "OFF"
-            height 0
-            width 0
+            xml.drawBoard true
+            xml.boardChanged false
+            xml.name "Grasslands"
+            xml.isVisible true
+            xml.visionType "OFF"
+            xml.height 0
+            xml.width 0
           } # zone
-          assetMap {
+          xml.assetMap {
             ['F', 'W'].each_with_index do |paint, i|
-              entry {
-                send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[#{i+1}]/pen/paint/assetId")
-                null
+              xml.entry {
+                xml.send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[#{i+1}]/pen/paint/assetId")
+                xml.null
               } # entry
             end
             token_map.each do |refpoint|
-              entry {
-                send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
-                null
+              xml.entry {
+                xml.send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
+                xml.null
               } # entry
             end
           } # assetMap
         } # net.rptools.maptool.util.PersistenceUtil_-PersistedMap
       end
+    end
+
+    private
+
+    def draw_background xml
+      draw_anchor_tiles xml
+      draw_floor_tiles xml
+      draw_walls xml
+    end
+
+    def draw_anchor_tiles xml
+      ['F', 'W'].each do |tile|
+        draw_rect xml, -100, -100, 10, 10, tile
+      end
+    end
+
+    def draw_floor_tiles xml
+      @map.each_with_index do |row, i|
+        row.each_with_index do |tile, j|
+          next if tile.nil?
+          draw_rect xml, j * 25, i * 25, 25, 25, 'F'
+        end
+      end
+    end
+
+    def draw_walls xml
+      @map.each_with_index do |row, i|
+        row.each_with_index do |tile, j|
+          next if tile.nil?
+          {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}.each do |dir, neighbor|
+            next if i - 1 < 0 || i + 1 >= map.size || j - 1 < 0 || j + 1 >= row.size
+            if ([:n, :s].include?(dir) && (map[neighbor][j].nil? || map[neighbor][j] =~ /S/)) || 
+               ([:w, :e].include?(dir) && (map[i][neighbor].nil? || map[i][neighbor] =~ /S/))
+              case dir
+              when :n
+                draw_rect xml, j * 25 - 5, i * 25, 35, 3, 'W'
+              when :s
+                draw_rect xml, j * 25 - 5, neighbor * 25 - 3, 35, 3, 'W'
+              when :w
+                draw_rect xml, j * 25, i * 25 - 5, 3, 35, 'W'
+              when :e
+                draw_rect xml, neighbor * 25 - 3, i * 25 - 5, 3, 35, 'W'
+              else
+                # do nothing
+              end
+            end # if
+          end # {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}
+        end # row.each_with_index
+      end # map.each_with_index
+    end
+
+    def draw_rect(xml, x, y, width, height, tile)
+      xml.send("net.rptools.maptool.model.drawing.DrawnElement") {
+        xml.drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
+          xml.id_ {
+            xml.baGUID MapFile.generate_guid
+          } # id
+          xml.layer "BACKGROUND"
+          xml.shape(:class => "java.awt.Rectangle") {
+            xml.x x
+            xml.y_ y
+            xml.width width
+            xml.height height
+          } # shape
+          xml.useAntiAliasing false
+        } # drawable
+        xml.pen {
+          xml.foregroundMode 0
+          xml.paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+            xml.assetId {
+              xml.id_ @asset_group.find_asset_by_tile(tile).asset_md5
+            } # assetId
+            xml.scale 1.0
+          } # paint
+          xml.backgroundMode 0
+          xml.backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+            xml.assetId {
+              xml.id_ @asset_group.find_asset_by_tile(tile).asset_md5
+            } # assetId
+            xml.scale 1.0
+          } # backgroundPaint
+          xml.thickness 1.0
+          xml.eraser false
+          xml.opacity 1.0
+          xml.color 0
+          xml.backgroundColor 0
+        } # pen
+      } # send("net.rptools.maptool.model.drawing.DrawnElement")
     end
   end
 
