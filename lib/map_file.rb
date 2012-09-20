@@ -190,21 +190,21 @@ module RpTools
                               x j * 25 - 5
                               y_ i * 25
                               width 35
-                              height 5
+                              height 3
                             when :s
                               x j * 25 - 5
-                              y_ neighbor * 25 - 5
+                              y_ neighbor * 25 - 3
                               width 35
-                              height 5
+                              height 3
                             when :w
                               x j * 25
                               y_ i * 25 - 5
-                              width 5
+                              width 3
                               height 35
                             when :e
-                              x neighbor * 25 - 5
+                              x neighbor * 25 - 3
                               y_ i * 25 - 5
-                              width 5
+                              width 3
                               height 35
                             else
                               # do nothing
