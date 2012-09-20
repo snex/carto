@@ -92,6 +92,44 @@ module RpTools
             gmDrawables(:class => "linked-list")
             objectDrawables(:class => "linked-list")
             backgroundDrawables(:class => "linked-list") {
+              ['F', 'W'].each do |paint|
+                send("net.rptools.maptool.model.drawing.DrawnElement") {
+                  drawable(:class => "net.rptools.maptool.model.drawing.ShapeDrawable") {
+                    id_ {
+                      baGUID MapFile.generate_guid
+                    } # id
+                    layer "BACKGROUND"
+                    shape(:class => "java.awt.Rectangle") {
+                      x -100
+                      y_ -100
+                      width 10
+                      height 10
+                    } # shape
+                    useAntiAliasing false
+                  } # drawable
+                  pen {
+                    foregroundMode 0
+                    paint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                      assetId {
+                        id_ asset_group.find_asset_by_tile(paint).asset_md5
+                      } # assetId
+                      scale 1.0
+                    } # paint
+                    backgroundMode 0
+                    backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableTexturePaint") {
+                      assetId {
+                        id_ asset_group.find_asset_by_tile(paint).asset_md5
+                      } # assetId
+                      scale 1.0
+                    } # backgroundPaint
+                    thickness 1.0
+                    eraser false
+                    opacity 1.0
+                    color 0
+                    backgroundColor 0
+                  } # pen
+                } # send("net.rptools.maptool.model.drawing.DrawnElement")
+              end # ['F', 'W'].each
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
                   next if tile.nil?
@@ -416,14 +454,12 @@ module RpTools
             width 0
           } # zone
           assetMap {
-            entry {
-              send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[2]/pen/backgroundPaint/assetId")
-              null
-            } # entry
-            entry {
-              send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement/pen/paint/assetId")
-              null
-            } # entry
+            ['F', 'W'].each_with_index do |paint, i|
+              entry {
+                send("net.rptools.lib.MD5Key", :reference => "../../../zone/backgroundDrawables/net.rptools.maptool.model.drawing.DrawnElement[#{i+1}]/pen/paint/assetId")
+                null
+              } # entry
+            end
             token_map.each do |refpoint|
               entry {
                 send("net.rptools.lib.MD5Key", :reference => "../../../zone/tokenMap/entry[#{refpoint}]/net.rptools.maptool.model.Token/imageAssetMap/entry/net.rptools.lib.MD5Key")
