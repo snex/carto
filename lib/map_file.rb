@@ -313,7 +313,7 @@ module RpTools
                       ownerType 0
                       tokenShape "TOP_DOWN"
                       tokenType "NPC"
-                      layer "BACKGROUND"
+                      layer "OBJECT"
                       propertyType "Basic"
                       isFlippedX false
                       isFlippedY false
