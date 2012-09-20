@@ -173,6 +173,7 @@ module RpTools
               end # map.each_with_index
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
+                  next if tile.nil?
                   {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}.each do |dir, neighbor|
                     next if i - 1 < 0 || i + 1 >= map.size || j - 1 < 0 || j + 1 >= row.size
                     if ([:n, :s].include?(dir) && (map[neighbor][j].nil? || map[neighbor][j] =~ /S/)) || 
