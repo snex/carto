@@ -344,7 +344,12 @@ module RpTools
 
     def draw_anchor_tiles xml
       ['F', 'W'].each do |tile|
-        draw_rect xml, -100, -100, 10, 10, tile
+        draw_rect xml,
+          -100,
+          -100,
+          10,
+          10,
+          tile
       end
     end
 
@@ -352,12 +357,17 @@ module RpTools
       @map.each_with_index do |row, i|
         row.each_with_index do |tile, j|
           next if tile.nil?
-          draw_rect xml, j * 25, i * 25, 25, 25, 'F'
+          draw_rect xml,
+            j * 25,
+            i * 25,
+            25,
+            25,
+            'F'
         end
       end
     end
 
-    def draw_walls xml
+    def draw_walls xml, thickness = 3
       @map.each_with_index do |row, i|
         row.each_with_index do |tile, j|
           next if tile.nil?
@@ -367,13 +377,33 @@ module RpTools
                ([:w, :e].include?(dir) && (map[i][neighbor].nil? || map[i][neighbor] =~ /S/))
               case dir
               when :n
-                draw_rect xml, j * 25 - 5, i * 25, 35, 3, 'W'
+                draw_rect xml,
+                  j * 25 - thickness,
+                  i * 25,
+                  25 + thickness * 2,
+                  thickness,
+                  'W'
               when :s
-                draw_rect xml, j * 25 - 5, neighbor * 25 - 3, 35, 3, 'W'
+                draw_rect xml,
+                  j * 25 - thickness,
+                  neighbor * 25 - thickness,
+                  25 + thickness * 2,
+                  thickness,
+                  'W'
               when :w
-                draw_rect xml, j * 25, i * 25 - 5, 3, 35, 'W'
+                draw_rect xml,
+                  j * 25,
+                  i * 25 - thickness,
+                  thickness,
+                  25 + thickness * 2,
+                  'W'
               when :e
-                draw_rect xml, neighbor * 25 - 3, i * 25 - 5, 3, 35, 'W'
+                draw_rect xml,
+                  neighbor * 25 - thickness,
+                  i * 25 - thickness,
+                  thickness,
+                  25 + thickness * 2,
+                  'W'
               else
                 # do nothing
               end
