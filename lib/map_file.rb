@@ -53,39 +53,7 @@ module RpTools
             xml.id_ {
               xml.baGUID MapFile.generate_guid
             }
-            xml.grid(:class => "net.rptools.maptool.model.SquareGrid") {
-              xml.offsetX 0
-              xml.offsetY 0
-              xml.size 25
-              xml.zone(:reference => "../..")
-              xml.cellShape {
-                xml.curves {
-                  xml.send("sun.awt.geom.Order0") {
-                    xml.direction 1
-                    xml.x 0.0
-                    xml.y_ 0.0
-                  } # sun.awt.geom.Order0
-                  xml.send("sun.awt.geom.Order1") {
-                    xml.direction 1
-                    xml.x0 0.0
-                    xml.y0 0.0
-                    xml.x1 0.0
-                    xml.y1 25.0
-                    xml.xmin 0.0
-                    xml.xmax 0.0
-                  } # sun.awt.geom.Order1
-                  xml.send("sun.awt.geom.Order1") {
-                    xml.direction -1
-                    xml.x0 25.0
-                    xml.y0 0.0
-                    xml.x1 25.0
-                    xml.y1 25.0
-                    xml.xmin 25.0
-                    xml.xmax 25.0
-                  } # sun.awt.geom.Order1
-                } # curves
-              } # cellShape
-            } # grid
+            draw_grid xml
             xml.gridColor -1
             xml.imageScaleX 1.0
             xml.imageScaleY 1.0
@@ -331,6 +299,42 @@ module RpTools
     end
 
     private
+
+    def draw_grid xml
+      xml.grid(:class => "net.rptools.maptool.model.SquareGrid") {
+        xml.offsetX 0
+        xml.offsetY 0
+        xml.size 25
+        xml.zone(:reference => "../..")
+        xml.cellShape {
+          xml.curves {
+            xml.send("sun.awt.geom.Order0") {
+              xml.direction 1
+              xml.x 0.0
+              xml.y_ 0.0
+            } # sun.awt.geom.Order0
+            xml.send("sun.awt.geom.Order1") {
+              xml.direction 1
+              xml.x0 0.0
+              xml.y0 0.0
+              xml.x1 0.0
+              xml.y1 25.0
+              xml.xmin 0.0
+              xml.xmax 0.0
+            } # sun.awt.geom.Order1
+            xml.send("sun.awt.geom.Order1") {
+              xml.direction -1
+              xml.x0 25.0
+              xml.y0 0.0
+              xml.x1 25.0
+              xml.y1 25.0
+              xml.xmin 25.0
+              xml.xmax 25.0
+            } # sun.awt.geom.Order1
+          } # curves
+        } # cellShape
+      } # grid
+    end
 
     def draw_background xml
       draw_anchor_tiles xml
