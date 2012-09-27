@@ -86,9 +86,9 @@ module RpTools
                                  i * 25,
                                  obj,
                                  'BACKGROUND',
-                                 @tileset['random']['objects'][obj]['name'],
-                                 @tileset['random']['objects'][obj]['notes'],
-                                 @tileset['random']['objects'][obj]['gm_notes'],
+                                 generate_token_name(obj),
+                                 generate_token_notes(obj),
+                                 generate_token_gm_notes(obj),
                                  @tileset['random']['objects'][obj]['size_scale']
                     end
                   elsif tile =~ /^D.*/
@@ -402,8 +402,7 @@ module RpTools
       when 'DSB', 'DST', 'DSR', 'DSL'
         'Secret Door'
       else
-        ''
-        # do nothing
+        @tileset['random']['objects'][tile]['name']
       end
     end
 
@@ -416,8 +415,7 @@ module RpTools
       when 'DSB', 'DST', 'DSR', 'DSL'
         ''
       else
-        ''
-        # do nothing
+        @tileset['random']['objects'][tile]['notes']
       end
     end
 
@@ -430,8 +428,7 @@ module RpTools
       when 'DSB', 'DST', 'DSR', 'DSL'
         'Secret Door'
       else
-        ''
-        # do nothing
+        @tileset['random']['objects'][tile]['gm_notes']
       end
     end
 
