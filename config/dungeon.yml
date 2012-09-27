@@ -1,0 +1,14 @@
+F: assets/dungeon/Cobblestone.jpg
+DT: assets/dungeon/DoorHoriz.png
+DB: assets/dungeon/DoorHoriz.png
+DL: assets/dungeon/DoorVert.png
+DR: assets/dungeon/DoorVert.png
+DST: assets/dungeon/DoorSecretHoriz.png
+DSB: assets/dungeon/DoorSecretHoriz.png
+DSR: assets/dungeon/DoorSecretVert.png
+DSL: assets/dungeon/DoorSecretVert.png
+DPT: assets/dungeon/DoorHoriz.png
+DPB: assets/dungeon/DoorHoriz.png
+DPR: assets/dungeon/DoorVert.png
+DPL: assets/dungeon/DoorVert.png
+W: assets/dungeon/Wall.jpg

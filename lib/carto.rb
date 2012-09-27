@@ -8,7 +8,7 @@ class Carto
   attr :tileset, :map_file, :output_file
 
   def initialize options = {}
-    default_options = { :tileset     => 'default',
+    default_options = { :tileset     => 'dungeon',
                         :output_file => 'new_map.rpmap',
                         :version     => '1.3.b88'
                       }
