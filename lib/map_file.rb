@@ -70,95 +70,57 @@ module RpTools
               count = 0
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
-                  next if tile.nil? || tile == 'F'
-                  count += 1
-                  token_map << count
-                  xml.entry {
-                    token_guid = MapFile.generate_guid
-                    xml.send("net.rptools.maptool.model.GUID") {
-                      xml.baGUID token_guid
-                    } # net.rptools.maptool.model.GUID
-                    xml.send("net.rptools.maptool.model.Token") {
-                      xml.id_ {
-                        xml.baGUID token_guid
-                      } # id
-                      xml.beingImpersonated false
-                      xml.exposedAreaGUID {
-                        xml.baGUID MapFile.generate_guid
-                      } # exposedAreaGUID
-                      xml.imageAssetMap {
-                        xml.entry {
-                          xml.null
-                          xml.send("net.rptools.lib.MD5Key") {
-                            xml.id_ asset_group.find_asset_by_tile(tile).asset_md5
-                          } # net.rptools.lib.MD5Key
-                        } # entry
-                      } # imageAssetMap
-                      case tile
-                      when /.*(B|T)/
-                        xml.x j * 25
-                        xml.y_ i * 25 - 12
-                      when /.*(L|R)/
-                        xml.x j * 25 - 12
-                        xml.y_ i * 25
-                      else
-                        # do nothing
+                  if tile == 'F'
+                    if @tileset['random'] && rand < @tileset['random']['freq'].to_f
+                      obj_arr = []
+                      @tileset['random']['objects'].each do |obj_name, obj_data|
+                        obj_data['likelihood'].to_i.times do
+                          obj_arr << obj_name
+                        end
                       end
-                      xml.z 1
-                      xml.anchorX 0
-                      xml.anchorY 0
-                      xml.sizeScale 2.0
-                      xml.lastX 0
-                      xml.lastY 0
-                      xml.snapToScale true
-                      xml.width 250
-                      xml.height 100
-                      xml.scaleX 1.0
-                      xml.scaleY 1.0
-                      xml.sizeMap {
-                        xml.entry {
-                          xml.send("java-class", "net.rptools.maptool.model.SquareGrid")
-                          xml.send("net.rptools.maptool.model.GUID") {
-                            xml.baGUID MapFile.generate_guid
-                          } # net.rptools.maptool.model.GUID
-                        } # entry
-                      } # sizeMap
-                      xml.snapToGrid false
-                      xml.isVisible true
-                      xml.visibleOnlyToOwner false
-                      case tile
-                      when 'DB', 'DT', 'DR', 'DL'
-                        xml.name 'Door'
-                      when 'DPB', 'DPT', 'DPR', 'DPL'
-                        xml.name 'Portcullis'
-                      when 'DSB', 'DST', 'DSR', 'DSL'
-                        xml.name 'Secret Door'
-                      else
-                        # do nothing
-                      end
-                      xml.ownerType 0
-                      xml.tokenShape "TOP_DOWN"
-                      xml.tokenType "NPC"
-                      xml.layer "OBJECT"
-                      xml.propertyType "Basic"
-                      xml.isFlippedX false
-                      xml.isFlippedY false
-                      xml.hasSight false
-                      case tile
-                      when 'DB', 'DT', 'DR', 'DL'
-                        xml.notes 'Door'
-                      when 'DPB', 'DPT', 'DPR', 'DPL'
-                        xml.notes 'Portcullis'
-                      when 'DSB', 'DST', 'DSR', 'DSL'
-                        xml.gmNotes 'Secret Door'
-                      else
-                        # do nothing
-                      end
-                      xml.state
-                    } # net.rptools.maptool.model.Token
-                  } # entry
-                end
-              end
+                      obj = obj_arr.sample
+                      count += 1
+                      token_map << count
+                      draw_token xml,
+                                 j * 25,
+                                 i * 25,
+                                 obj,
+                                 'BACKGROUND',
+                                 @tileset['random']['objects'][obj]['name'],
+                                 @tileset['random']['objects'][obj]['notes'],
+                                 @tileset['random']['objects'][obj]['gm_notes'],
+                                 @tileset['random']['objects'][obj]['size_scale']
+                    end
+                  elsif tile =~ /^D.*/
+                    count += 1
+                    token_map << count
+                    case tile
+                    when /.*(B|T)/
+                      draw_token xml,
+                                 j * 25,
+                                 i * 25 - 12,
+                                 tile,
+                                 'OBJECT',
+                                 generate_token_name(tile),
+                                 generate_token_notes(tile),
+                                 generate_token_gm_notes(tile)
+                    when /.*(L|R)/
+                      draw_token xml,
+                                 j * 25 - 12,
+                                 i * 25,
+                                 tile,
+                                 'OBJECT',
+                                 generate_token_name(tile),
+                                 generate_token_notes(tile),
+                                 generate_token_gm_notes(tile)
+                    else
+                      # do nothing
+                    end
+                  else
+                    # do nothing
+                  end
+                end # row.each_with_index
+              end # map.each_with_index
             } # tokenMap
             xml.exposedAreaMeta
             xml.tokenOrderedList(:class => "linked-list") {
@@ -181,90 +143,7 @@ module RpTools
             xml.fogPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
               xml.color -16777216
             } # fogPaint
-            xml.topology {
-              xml.curves {
-                map.each_with_index do |row, i|
-                  row.each_with_index do |tile, j|
-                    case tile
-                    when 'DSB', 'DST', 'DSR', 'DSL', nil
-                      xml.send("sun.awt.geom.Order0") {
-                        xml.direction 1
-                        xml.x  j * 25.0
-                        xml.y_ i * 25.0
-                      } # sun.awt.geom.Order0
-                      xml.send("sun.awt.geom.Order1") {
-                        xml.direction 1
-                        xml.x0 j * 25.0
-                        xml.y0 i * 25.0
-                        xml.x1 j * 25.0
-                        xml.y1 (i + 1) * 25.0
-                        xml.xmin j * 25.0
-                        xml.xmax i * 25.0
-                      } # sun.awt.geom.Order1
-                      xml.send("sun.awt.geom.Order1") {
-                        xml.direction -1
-                        xml.x0 (j + 1) * 25.0
-                        xml.y0 i * 25.0
-                        xml.x1 (j + 1) * 25.0
-                        xml.y1 (i + 1) * 25.0
-                        xml.xmin (j + 1) * 25.0
-                        xml.xmax (i + 1) * 25.0
-                      } # sun.awt.geom.Order1
-                    when 'DB', 'DT'
-                      xml.send("sun.awt.geom.Order0") {
-                        xml.direction 1
-                        xml.x  j * 25.0
-                        xml.y_ (i + 0.45) * 25.0
-                      } # sun.awt.geom.Order0
-                      xml.send("sun.awt.geom.Order1") {
-                        xml.direction 1
-                        xml.x0 j * 25.0
-                        xml.y0 (i + 0.45) * 25.0
-                        xml.x1 j * 25.0
-                        xml.y1 (i + 0.55) * 25.0
-                        xml.xmin j * 25.0
-                        xml.xmax i * 25.0
-                      } # sun.awt.geom.Order1
-                      xml.send("sun.awt.geom.Order1") {
-                        xml.direction -1
-                        xml.x0 (j + 1) * 25.0
-                        xml.y0 (i + 0.45) * 25.0
-                        xml.x1 (j + 1) * 25.0
-                        xml.y1 (i + 0.55) * 25.0
-                        xml.xmin (j + 1) * 25.0
-                        xml.xmax (i + 1) * 25.0
-                      } # sun.awt.geom.Order1
-                    when 'DR', 'DL'
-                      xml.send("sun.awt.geom.Order0") {
-                        xml.direction 1
-                        xml.x  (j + 0.45) * 25.0
-                        xml.y_ i * 25.0
-                      } # sun.awt.geom.Order0
-                      xml.send("sun.awt.geom.Order1") {
-                        xml.direction 1
-                        xml.x0 (j + 0.45) * 25.0
-                        xml.y0 i * 25.0
-                        xml.x1 (j + 0.45) * 25.0
-                        xml.y1 (i + 1) * 25.0
-                        xml.xmin j * 25.0
-                        xml.xmax i * 25.0
-                      } # sun.awt.geom.Order1
-                      xml.send("sun.awt.geom.Order1") {
-                        xml.direction -1
-                        xml.x0 (j + 0.55) * 25.0
-                        xml.y0 i * 25.0
-                        xml.x1 (j + 0.55) * 25.0
-                        xml.y1 (i + 1) * 25.0
-                        xml.xmin (j + 1) * 25.0
-                        xml.xmax (i + 1) * 25.0
-                      } # sun.awt.geom.Order1
-                    else
-                      # do nothing
-                    end
-                  end
-                end
-              } # curves
-            } # topology
+            draw_topology xml
             xml.backgroundPaint(:class => "net.rptools.maptool.model.drawing.DrawableColorPaint") {
               xml.color -16777216
             } # backgroundPaint
@@ -451,6 +330,197 @@ module RpTools
         } # pen
       } # send("net.rptools.maptool.model.drawing.DrawnElement")
     end
+
+    def draw_token xml, x, y, asset_code, layer, name, notes, gm_notes, size_scale = 2.0
+      xml.entry {
+        token_guid = MapFile.generate_guid
+        xml.send("net.rptools.maptool.model.GUID") {
+          xml.baGUID token_guid
+        } # net.rptools.maptool.model.GUID
+        xml.send("net.rptools.maptool.model.Token") {
+          xml.id_ {
+            xml.baGUID token_guid
+          } # id
+          xml.beingImpersonated false
+          xml.exposedAreaGUID {
+            xml.baGUID MapFile.generate_guid
+          } # exposedAreaGUID
+          xml.imageAssetMap {
+            xml.entry {
+              xml.null
+              xml.send("net.rptools.lib.MD5Key") {
+                xml.id_ asset_group.find_asset_by_tile(asset_code).asset_md5
+              } # net.rptools.lib.MD5Key
+            } # entry
+          } # imageAssetMap
+          xml.x x
+          xml.y_ y
+          xml.z 1
+          xml.anchorX 0
+          xml.anchorY 0
+          xml.sizeScale size_scale
+          xml.lastX 0
+          xml.lastY 0
+          xml.snapToScale true
+          xml.width 250
+          xml.height 100
+          xml.scaleX 1.0
+          xml.scaleY 1.0
+          xml.sizeMap {
+            xml.entry {
+              xml.send("java-class", "net.rptools.maptool.model.SquareGrid")
+              xml.send("net.rptools.maptool.model.GUID") {
+                xml.baGUID MapFile.generate_guid
+              } # net.rptools.maptool.model.GUID
+            } # entry
+          } # sizeMap
+          xml.snapToGrid false
+          xml.isVisible true
+          xml.visibleOnlyToOwner false
+          xml.name name
+          xml.ownerType 0
+          xml.tokenShape "TOP_DOWN"
+          xml.tokenType "NPC"
+          xml.layer layer
+          xml.propertyType "Basic"
+          xml.isFlippedX false
+          xml.isFlippedY false
+          xml.hasSight false
+          xml.notes notes
+          xml.gmNotes gm_notes
+          xml.state
+        } # net.rptools.maptool.model.Token
+      } # entry
+    end
+
+    def generate_token_name tile
+      case tile
+      when 'DB', 'DT', 'DR', 'DL'
+        'Door'
+      when 'DPB', 'DPT', 'DPR', 'DPL'
+        'Portcullis'
+      when 'DSB', 'DST', 'DSR', 'DSL'
+        'Secret Door'
+      else
+        ''
+        # do nothing
+      end
+    end
+
+    def generate_token_notes tile
+      case tile
+      when 'DB', 'DT', 'DR', 'DL'
+        'Door'
+      when 'DPB', 'DPT', 'DPR', 'DPL'
+        'Portcullis'
+      when 'DSB', 'DST', 'DSR', 'DSL'
+        ''
+      else
+        ''
+        # do nothing
+      end
+    end
+
+    def generate_token_gm_notes tile
+      case tile
+      when 'DB', 'DT', 'DR', 'DL'
+        'Door'
+      when 'DPB', 'DPT', 'DPR', 'DPL'
+        'Portcullis'
+      when 'DSB', 'DST', 'DSR', 'DSL'
+        'Secret Door'
+      else
+        ''
+        # do nothing
+      end
+    end
+
+    def draw_topology xml
+      xml.topology {
+        xml.curves {
+          @map.each_with_index do |row, i|
+            row.each_with_index do |tile, j|
+              case tile
+              when 'DSB', 'DST', 'DSR', 'DSL', nil
+                xml.send("sun.awt.geom.Order0") {
+                  xml.direction 1
+                  xml.x  j * 25.0
+                  xml.y_ i * 25.0
+                } # sun.awt.geom.Order0
+                xml.send("sun.awt.geom.Order1") {
+                  xml.direction 1
+                  xml.x0 j * 25.0
+                  xml.y0 i * 25.0
+                  xml.x1 j * 25.0
+                  xml.y1 (i + 1) * 25.0
+                  xml.xmin j * 25.0
+                  xml.xmax i * 25.0
+                } # sun.awt.geom.Order1
+                xml.send("sun.awt.geom.Order1") {
+                  xml.direction -1
+                  xml.x0 (j + 1) * 25.0
+                  xml.y0 i * 25.0
+                  xml.x1 (j + 1) * 25.0
+                  xml.y1 (i + 1) * 25.0
+                  xml.xmin (j + 1) * 25.0
+                  xml.xmax (i + 1) * 25.0
+                } # sun.awt.geom.Order1
+              when 'DB', 'DT'
+                xml.send("sun.awt.geom.Order0") {
+                  xml.direction 1
+                  xml.x  j * 25.0
+                  xml.y_ (i + 0.45) * 25.0
+                } # sun.awt.geom.Order0
+                xml.send("sun.awt.geom.Order1") {
+                  xml.direction 1
+                  xml.x0 j * 25.0
+                  xml.y0 (i + 0.45) * 25.0
+                  xml.x1 j * 25.0
+                  xml.y1 (i + 0.55) * 25.0
+                  xml.xmin j * 25.0
+                  xml.xmax i * 25.0
+                } # sun.awt.geom.Order1
+                xml.send("sun.awt.geom.Order1") {
+                  xml.direction -1
+                  xml.x0 (j + 1) * 25.0
+                  xml.y0 (i + 0.45) * 25.0
+                  xml.x1 (j + 1) * 25.0
+                  xml.y1 (i + 0.55) * 25.0
+                  xml.xmin (j + 1) * 25.0
+                  xml.xmax (i + 1) * 25.0
+                } # sun.awt.geom.Order1
+              when 'DR', 'DL'
+                xml.send("sun.awt.geom.Order0") {
+                  xml.direction 1
+                  xml.x  (j + 0.45) * 25.0
+                  xml.y_ i * 25.0
+                } # sun.awt.geom.Order0
+                xml.send("sun.awt.geom.Order1") {
+                  xml.direction 1
+                  xml.x0 (j + 0.45) * 25.0
+                  xml.y0 i * 25.0
+                  xml.x1 (j + 0.45) * 25.0
+                  xml.y1 (i + 1) * 25.0
+                  xml.xmin j * 25.0
+                  xml.xmax i * 25.0
+                } # sun.awt.geom.Order1
+                xml.send("sun.awt.geom.Order1") {
+                  xml.direction -1
+                  xml.x0 (j + 0.55) * 25.0
+                  xml.y0 i * 25.0
+                  xml.x1 (j + 0.55) * 25.0
+                  xml.y1 (i + 1) * 25.0
+                  xml.xmin (j + 1) * 25.0
+                  xml.xmax (i + 1) * 25.0
+                } # sun.awt.geom.Order1
+              else
+                # do nothing
+              end
+            end
+          end
+        } # curves
+      } # topology
+    end
   end
 
   class PropertiesFile
@@ -498,14 +568,24 @@ module RpTools
     def initialize tileset
       @tileset = tileset
       @assets = []
-      @tileset.each do |code, image_file|
+      @tileset['tiles'].each do |code, image_file|
         @assets << Asset.new(image_file)
+      end
+      if @tileset['random']
+        @tileset['random']['objects'].each do |obj, data|
+          @assets << Asset.new(data['file'])
+        end
       end
       @assets.uniq! { |asset| [asset.asset_md5, asset.image_file] }
     end
 
-    def find_asset_by_tile tile
-      @assets.find { |asset| asset.image_file == @tileset[tile] }
+    def find_asset_by_tile obj
+      asset = @assets.find { |asset| asset.image_file == @tileset['tiles'][obj] }
+      if asset.nil?
+        asset = @assets.find { |asset| asset.image_file == @tileset['random']['objects'][obj]['file'] }
+      end
+      return asset
     end
+
   end
 end

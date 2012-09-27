@@ -1,14 +1,67 @@
-F: assets/dungeon/Cobblestone.jpg
-DT: assets/dungeon/DoorHoriz.png
-DB: assets/dungeon/DoorHoriz.png
-DL: assets/dungeon/DoorVert.png
-DR: assets/dungeon/DoorVert.png
-DST: assets/dungeon/DoorSecretHoriz.png
-DSB: assets/dungeon/DoorSecretHoriz.png
-DSR: assets/dungeon/DoorSecretVert.png
-DSL: assets/dungeon/DoorSecretVert.png
-DPT: assets/dungeon/DoorHoriz.png
-DPB: assets/dungeon/DoorHoriz.png
-DPR: assets/dungeon/DoorVert.png
-DPL: assets/dungeon/DoorVert.png
-W: assets/dungeon/Wall.jpg
+tiles:
+  F: assets/dungeon/Cobblestone.jpg
+  DT: assets/dungeon/DoorHoriz.png
+  DB: assets/dungeon/DoorHoriz.png
+  DL: assets/dungeon/DoorVert.png
+  DR: assets/dungeon/DoorVert.png
+  DST: assets/dungeon/DoorSecretHoriz.png
+  DSB: assets/dungeon/DoorSecretHoriz.png
+  DSR: assets/dungeon/DoorSecretVert.png
+  DSL: assets/dungeon/DoorSecretVert.png
+  DPT: assets/dungeon/DoorHoriz.png
+  DPB: assets/dungeon/DoorHoriz.png
+  DPR: assets/dungeon/DoorVert.png
+  DPL: assets/dungeon/DoorVert.png
+  W: assets/dungeon/Wall.jpg
+random:
+  freq: 0.15
+  objects:
+    barrel:
+      file: assets/dungeon/Barrel.png
+      name: 'Barrel'
+      notes: 'Just an ordinary barrel.'
+      gm_notes: ''
+      size_scale: 0.5
+      likelihood: 3
+    bones:
+      file: assets/dungeon/Bones.png
+      name: 'Bones'
+      notes: 'Some unlucky adventurer met his end here.'
+      gm_notes: ''
+      size_scale: 1.0
+      likelihood: 3
+    brazier_lit:
+      file: 'assets/dungeon/Brazier,Lit.png'
+      name: 'Brazier'
+      notes: 'How convenient, a lit brazier!'
+      gm_notes: ''
+      size_scale: 1.0
+      likelihood: 1
+    brazier_unlit:
+      file: assets/dungeon/Brazier.png
+      name: 'Brazier'
+      notes: 'An unlit brazier.'
+      gm_notes: ''
+      size_scale: 0.5
+      likelihood: 2
+    chest:
+      file: assets/dungeon/Chest.png
+      name: 'Chest'
+      notes: 'A chest. I bet there is untold wealth within!'
+      gm_notes: ''
+      size_scale: 0.5
+      likelihood: 1
+    floor_hole:
+      file: assets/dungeon/FloorHole.png
+      name: 'Hole'
+      notes: 'A hole in the floor. Watch your step!'
+      gm_notes: ''
+      size_scale: 1.0
+      likelihood: 5
+    hung_meat:
+      file: assets/dungeon/HungMeat.png
+      name: 'Hanging Meat'
+      notes: 'This hanging meat is rotton, only suitable for goblins and other beasts.'
+      gm_notes: ''
+      size_scale: 2.0
+      likelihood: 1
