@@ -37,7 +37,7 @@ random:
       gm_notes: ''
       size: tiny
       likelihood: 1
-      light: torch
+      light: 20
     brazier_unlit:
       file: assets/dungeon/Brazier.png
       name: 'Brazier'

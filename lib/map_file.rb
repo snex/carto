@@ -41,10 +41,13 @@ module RpTools
   class ContentFile
     attr_reader :map, :asset_group, :tileset, :xml_data
 
-    LIGHT_SOURCES = { 'candle' => 'wKgCYyXCvh0BAAAAAKgCIQ==',
-                      'lamp'   => 'wKgCY3PCvh0CAAAAAKgCYw==',
-                      'torch'  => 'wKgCY3PCvh0DAAAAAKgCYw==',
-                      'sunrod' => 'wKgCY3PCvh0GAAAAAKgCYw==' }
+    LIGHT_SOURCES = { '5'  => 'wKgCY4PCvh0HAAAAAKgCAw==',
+                      '15' => 'wKgCY4PCvh0IAAAAAKgCAw==',
+                      '20' => 'wKgCY4PCvh0JAAAAAKgCAw==',
+                      '30' => 'wKgCY4PCvh0KAAAAAKgCAw==',
+                      '40' => 'wKgCY4PCvh0LAAAAAKgCAw==',
+                      '60' => 'wKgCY4PCvh0MAAAAAKgCAw=='
+    }
     SIZES = { 'fine'       => 'fwABAc1lFSoBAAAAKgABAQ==',
               'dimunitive' => 'fwABAc1lFSoCAAAAKgABAQ==',
               'tiny'       => 'fwABAc5lFSoDAAAAKgABAA==',
@@ -53,7 +56,8 @@ module RpTools
               'large'      => 'fwABAdBlFSoGAAAAKgABAA==',
               'huge'       => 'fwABAdBlFSoHAAAAKgABAA==',
               'gargantuan' => 'fwABAdFlFSoIAAAAKgABAQ==',
-              'colossal'   => 'fwABAeFlFSoJAAAAKgABAQ==' }
+              'colossal'   => 'fwABAeFlFSoJAAAAKgABAQ=='
+    }
 
     def initialize map = [], asset_group, tileset
       @map = map
@@ -412,7 +416,7 @@ module RpTools
             xml.lightSourceList {
               xml.send("net.rptools.maptool.model.AttachedLightSource") {
                 xml.lightSourceId {
-                  xml.baGUID LIGHT_SOURCES[light]
+                  xml.baGUID LIGHT_SOURCES[light.to_s]
                 } # lightSourceId
                 xml.direction "CENTER"
               } # net.rptools.maptool.model.AttachedLightSource
