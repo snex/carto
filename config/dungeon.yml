@@ -21,47 +21,48 @@ random:
       name: 'Barrel'
       notes: 'Just an ordinary barrel.'
       gm_notes: ''
-      size_scale: 0.5
+      size: tiny
       likelihood: 3
     bones:
       file: assets/dungeon/Bones.png
       name: 'Bones'
       notes: 'Some unlucky adventurer met his end here.'
       gm_notes: ''
-      size_scale: 1.0
+      size: medium
       likelihood: 3
     brazier_lit:
       file: 'assets/dungeon/Brazier,Lit.png'
       name: 'Brazier'
       notes: 'How convenient, a lit brazier!'
       gm_notes: ''
-      size_scale: 1.0
+      size: tiny
       likelihood: 1
+      light: torch
     brazier_unlit:
       file: assets/dungeon/Brazier.png
       name: 'Brazier'
       notes: 'An unlit brazier.'
       gm_notes: ''
-      size_scale: 0.5
+      size: tiny
       likelihood: 2
     chest:
       file: assets/dungeon/Chest.png
       name: 'Chest'
       notes: 'A chest. I bet there is untold wealth within!'
       gm_notes: ''
-      size_scale: 0.5
+      size: tiny
       likelihood: 1
     floor_hole:
       file: assets/dungeon/FloorHole.png
       name: 'Hole'
       notes: 'A hole in the floor. Watch your step!'
       gm_notes: ''
-      size_scale: 1.0
+      size: medium
       likelihood: 5
     hung_meat:
       file: assets/dungeon/HungMeat.png
       name: 'Hanging Meat'
       notes: 'This hanging meat is rotton, only suitable for goblins and other beasts.'
       gm_notes: ''
-      size_scale: 2.0
+      size: large
       likelihood: 1

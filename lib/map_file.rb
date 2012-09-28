@@ -41,6 +41,20 @@ module RpTools
   class ContentFile
     attr_reader :map, :asset_group, :tileset, :xml_data
 
+    LIGHT_SOURCES = { 'candle' => 'wKgCYyXCvh0BAAAAAKgCIQ==',
+                      'lamp'   => 'wKgCY3PCvh0CAAAAAKgCYw==',
+                      'torch'  => 'wKgCY3PCvh0DAAAAAKgCYw==',
+                      'sunrod' => 'wKgCY3PCvh0GAAAAAKgCYw==' }
+    SIZES = { 'fine'       => 'fwABAc1lFSoBAAAAKgABAQ==',
+              'dimunitive' => 'fwABAc1lFSoCAAAAKgABAQ==',
+              'tiny'       => 'fwABAc5lFSoDAAAAKgABAA==',
+              'small'      => 'fwABAc5lFSoEAAAAKgABAA==',
+              'medium'     => 'fwABAc9lFSoFAAAAKgABAQ==',
+              'large'      => 'fwABAdBlFSoGAAAAKgABAA==',
+              'huge'       => 'fwABAdBlFSoHAAAAKgABAA==',
+              'gargantuan' => 'fwABAdFlFSoIAAAAKgABAQ==',
+              'colossal'   => 'fwABAeFlFSoJAAAAKgABAQ==' }
+
     def initialize map = [], asset_group, tileset
       @map = map
       @asset_group = asset_group
@@ -89,7 +103,9 @@ module RpTools
                                  generate_token_name(obj),
                                  generate_token_notes(obj),
                                  generate_token_gm_notes(obj),
-                                 @tileset['random']['objects'][obj]['size_scale']
+                                 rand(360),
+                                 @tileset['random']['objects'][obj]['light'],
+                                 @tileset['random']['objects'][obj]['size']
                     end
                   elsif tile =~ /^D.*/
                     count += 1
@@ -103,7 +119,10 @@ module RpTools
                                  'OBJECT',
                                  generate_token_name(tile),
                                  generate_token_notes(tile),
-                                 generate_token_gm_notes(tile)
+                                 generate_token_gm_notes(tile),
+                                 -90,
+                                 nil,
+                                 'large'
                     when /.*(L|R)/
                       draw_token xml,
                                  j * 25 - 12,
@@ -112,7 +131,10 @@ module RpTools
                                  'OBJECT',
                                  generate_token_name(tile),
                                  generate_token_notes(tile),
-                                 generate_token_gm_notes(tile)
+                                 generate_token_gm_notes(tile),
+                                 -90,
+                                 nil,
+                                 'large'
                     else
                       # do nothing
                     end
@@ -331,7 +353,7 @@ module RpTools
       } # send("net.rptools.maptool.model.drawing.DrawnElement")
     end
 
-    def draw_token xml, x, y, asset_code, layer, name, notes, gm_notes, size_scale = 2.0
+    def draw_token xml, x, y, asset_code, layer, name, notes, gm_notes, facing, light = nil, size = 'medium'
       xml.entry {
         token_guid = MapFile.generate_guid
         xml.send("net.rptools.maptool.model.GUID") {
@@ -358,7 +380,7 @@ module RpTools
           xml.z 1
           xml.anchorX 0
           xml.anchorY 0
-          xml.sizeScale size_scale
+          xml.sizeScale 1.0
           xml.lastX 0
           xml.lastY 0
           xml.snapToScale true
@@ -370,7 +392,7 @@ module RpTools
             xml.entry {
               xml.send("java-class", "net.rptools.maptool.model.SquareGrid")
               xml.send("net.rptools.maptool.model.GUID") {
-                xml.baGUID MapFile.generate_guid
+                xml.baGUID SIZES[size]
               } # net.rptools.maptool.model.GUID
             } # entry
           } # sizeMap
@@ -383,8 +405,19 @@ module RpTools
           xml.tokenType "NPC"
           xml.layer layer
           xml.propertyType "Basic"
+          xml.facing facing
           xml.isFlippedX false
           xml.isFlippedY false
+          if light
+            xml.lightSourceList {
+              xml.send("net.rptools.maptool.model.AttachedLightSource") {
+                xml.lightSourceId {
+                  xml.baGUID LIGHT_SOURCES[light]
+                } # lightSourceId
+                xml.direction "CENTER"
+              } # net.rptools.maptool.model.AttachedLightSource
+            } # lightSourceList
+          end # if light
           xml.hasSight false
           xml.notes notes
           xml.gmNotes gm_notes
