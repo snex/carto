@@ -99,9 +99,17 @@ module RpTools
                       obj = obj_arr.sample
                       count += 1
                       token_map << count
+                      offset = case @tileset['random']['objects'][obj]['size']
+                               when 'fine', 'diminutive', 'tiny'
+                                 12
+                               when 'small'
+                                 4
+                               else
+                                 1 # rand(1) = 0
+                               end
                       draw_token xml,
-                                 j * 25,
-                                 i * 25,
+                                 j * 25 + rand(offset),
+                                 i * 25 + rand(offset),
                                  obj,
                                  'BACKGROUND',
                                  generate_token_name(obj),
