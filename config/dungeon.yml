@@ -22,14 +22,14 @@ random:
       notes: 'Just an ordinary barrel.'
       gm_notes: ''
       size: tiny
-      likelihood: 3
+      likelihood: 10
     bones:
       file: assets/dungeon/Bones.png
       name: 'Bones'
       notes: 'Some unlucky adventurer met his end here.'
       gm_notes: ''
       size: medium
-      likelihood: 3
+      likelihood: 2
     brazier_lit:
       file: 'assets/dungeon/Brazier,Lit.png'
       name: 'Brazier'
@@ -58,7 +58,7 @@ random:
       notes: 'A hole in the floor. Watch your step!'
       gm_notes: ''
       size: medium
-      likelihood: 5
+      likelihood: 10
     hung_meat:
       file: assets/dungeon/HungMeat.png
       name: 'Hanging Meat'
