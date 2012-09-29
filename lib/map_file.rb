@@ -41,12 +41,12 @@ module RpTools
   class ContentFile
     attr_reader :map, :asset_group, :tileset, :xml_data
 
-    LIGHT_SOURCES = { '5'  => 'wKgCY4PCvh0HAAAAAKgCAw==',
-                      '15' => 'wKgCY4PCvh0IAAAAAKgCAw==',
-                      '20' => 'wKgCY4PCvh0JAAAAAKgCAw==',
-                      '30' => 'wKgCY4PCvh0KAAAAAKgCAw==',
-                      '40' => 'wKgCY4PCvh0LAAAAAKgCAw==',
-                      '60' => 'wKgCY4PCvh0MAAAAAKgCAw=='
+    LIGHT_SOURCES = { 5  => 'wKgCY4PCvh0HAAAAAKgCAw==',
+                      15 => 'wKgCY4PCvh0IAAAAAKgCAw==',
+                      20 => 'wKgCY4PCvh0JAAAAAKgCAw==',
+                      30 => 'wKgCY4PCvh0KAAAAAKgCAw==',
+                      40 => 'wKgCY4PCvh0LAAAAAKgCAw==',
+                      60 => 'wKgCY4PCvh0MAAAAAKgCAw=='
     }
     SIZES = { 'fine'       => 'fwABAc1lFSoBAAAAKgABAQ==',
               'dimunitive' => 'fwABAc1lFSoCAAAAKgABAQ==',
@@ -144,13 +144,14 @@ module RpTools
                                  j * 25 + rand(offset),
                                  i * 25 + rand(offset),
                                  obj,
-                                 'BACKGROUND',
-                                 generate_token_name(obj),
-                                 generate_token_notes(obj),
-                                 generate_token_gm_notes(obj),
-                                 rand(360),
-                                 @tileset['random']['objects'][obj]['light'],
-                                 @tileset['random']['objects'][obj]['size']
+                                 { :layer    => 'BACKGROUND',
+                                   :name     => generate_token_name(obj),
+                                   :notes    => generate_token_notes(obj),
+                                   :gm_notes => generate_token_gm_notes(obj),
+                                   :facing   => rand(360),
+                                   :light    => @tileset['random']['objects'][obj]['light'],
+                                   :size     => @tileset['random']['objects'][obj]['size']
+                                 }
                     end
                   elsif tile =~ /^D.*/
                     count += 1
@@ -161,25 +162,23 @@ module RpTools
                                  j * 25,
                                  i * 25 - 12,
                                  tile,
-                                 'OBJECT',
-                                 generate_token_name(tile),
-                                 generate_token_notes(tile),
-                                 generate_token_gm_notes(tile),
-                                 -90,
-                                 nil,
-                                 'large'
+                                 { :layer    => 'OBJECT',
+                                   :name     => generate_token_name(tile),
+                                   :notes    => generate_token_notes(tile),
+                                   :gm_notes => generate_token_gm_notes(tile),
+                                   :size     => 'large'
+                                 }
                     when /.*(L|R)/
                       draw_token xml,
                                  j * 25 - 12,
                                  i * 25,
                                  tile,
-                                 'OBJECT',
-                                 generate_token_name(tile),
-                                 generate_token_notes(tile),
-                                 generate_token_gm_notes(tile),
-                                 -90,
-                                 nil,
-                                 'large'
+                                 { :layer    => 'OBJECT',
+                                   :name     => generate_token_name(tile),
+                                   :notes    => generate_token_notes(tile),
+                                   :gm_notes => generate_token_gm_notes(tile),
+                                   :size     => 'large'
+                                 }
                     else
                       # do nothing
                     end
@@ -313,7 +312,7 @@ module RpTools
       end
     end
 
-    def draw_walls xml, thickness = 3
+    def draw_walls xml, options = { :thickness => 3 }
       @map.each_with_index do |row, i|
         row.each_with_index do |tile, j|
           next if tile.nil?
@@ -323,33 +322,13 @@ module RpTools
                ([:w, :e].include?(dir) && (map[i][neighbor].nil? || map[i][neighbor] =~ /S/))
               case dir
               when :n
-                draw_rect xml,
-                  j * 25 - thickness,
-                  i * 25,
-                  25 + thickness * 2,
-                  thickness,
-                  'W'
+                draw_north_wall xml, j, i, options
               when :s
-                draw_rect xml,
-                  j * 25 - thickness,
-                  neighbor * 25 - thickness,
-                  25 + thickness * 2,
-                  thickness,
-                  'W'
+                draw_south_wall xml, j, neighbor, options
               when :w
-                draw_rect xml,
-                  j * 25,
-                  i * 25 - thickness,
-                  thickness,
-                  25 + thickness * 2,
-                  'W'
+                draw_west_wall xml, j, i, options
               when :e
-                draw_rect xml,
-                  neighbor * 25 - thickness,
-                  i * 25 - thickness,
-                  thickness,
-                  25 + thickness * 2,
-                  'W'
+                draw_east_wall xml, neighbor, i, options
               else
                 # do nothing
               end
@@ -357,6 +336,42 @@ module RpTools
           end # {:n => i - 1, :s => i + 1, :w => j - 1, :e => j + 1}
         end # row.each_with_index
       end # map.each_with_index
+    end
+
+    def draw_north_wall xml, x, y, options = { :thickness => 3 }
+      draw_rect xml,
+        x * 25 - options[:thickness],
+        y * 25,
+        25 + options[:thickness] * 2,
+        options[:thickness],
+        'W'
+    end
+
+    def draw_south_wall xml, x, y, options = { :thickness => 3 }
+      draw_rect xml,
+        x * 25 - options[:thickness],
+        y * 25 - options[:thickness],
+        25 + options[:thickness] * 2,
+        options[:thickness],
+        'W'
+    end
+
+    def draw_east_wall xml, x, y, options = { :thickness => 3 }
+      draw_rect xml,
+        x * 25 - options[:thickness],
+        y * 25 - options[:thickness],
+        options[:thickness],
+        25 + options[:thickness] * 2,
+        'W'
+    end
+
+    def draw_west_wall xml, x, y, options = { :thickness => 3 }
+      draw_rect xml,
+        x * 25,
+        y * 25 - options[:thickness],
+        options[:thickness],
+        25 + options[:thickness] * 2,
+        'W'
     end
 
     def draw_rect(xml, x, y, width, height, tile)
@@ -398,7 +413,13 @@ module RpTools
       } # send("net.rptools.maptool.model.drawing.DrawnElement")
     end
 
-    def draw_token xml, x, y, asset_code, layer, name, notes, gm_notes, facing, light = nil, size = 'medium'
+    def draw_token xml, x, y, asset_code, options = {}
+      default_options = { :layer  => 'BACKGROUND',
+                          :name   => 'Unknown',
+                          :facing => -90,
+                          :size   => 'medium'
+                        }
+      options.merge!(default_options) { |key, v1, v2| v1 }
       xml.entry {
         token_guid = MapFile.generate_guid
         xml.send("net.rptools.maptool.model.GUID") {
@@ -437,35 +458,35 @@ module RpTools
             xml.entry {
               xml.send("java-class", "net.rptools.maptool.model.SquareGrid")
               xml.send("net.rptools.maptool.model.GUID") {
-                xml.baGUID SIZES[size]
+                xml.baGUID SIZES[options[:size]]
               } # net.rptools.maptool.model.GUID
             } # entry
           } # sizeMap
           xml.snapToGrid false
           xml.isVisible true
           xml.visibleOnlyToOwner false
-          xml.name name
+          xml.name options[:name]
           xml.ownerType 0
           xml.tokenShape "TOP_DOWN"
           xml.tokenType "NPC"
-          xml.layer layer
+          xml.layer options[:layer]
           xml.propertyType "Basic"
-          xml.facing facing
+          xml.facing options[:facing]
           xml.isFlippedX false
           xml.isFlippedY false
-          if light
+          if options[:light]
             xml.lightSourceList {
               xml.send("net.rptools.maptool.model.AttachedLightSource") {
                 xml.lightSourceId {
-                  xml.baGUID LIGHT_SOURCES[light.to_s]
+                  xml.baGUID LIGHT_SOURCES[options[:light]]
                 } # lightSourceId
                 xml.direction "CENTER"
               } # net.rptools.maptool.model.AttachedLightSource
             } # lightSourceList
           end # if light
           xml.hasSight false
-          xml.notes notes
-          xml.gmNotes gm_notes
+          xml.notes options[:notes] if options[:notes]
+          xml.gmNotes options[:gm_notes] if options[:gm_notes]
           xml.state
         } # net.rptools.maptool.model.Token
       } # entry
