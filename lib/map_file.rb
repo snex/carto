@@ -86,6 +86,7 @@ module RpTools
             xml.labels(:class => "linked-hash-map")
             xml.tokenMap {
               count = 0
+              obj_map = []
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
                   if tile == 'F'
@@ -97,8 +98,40 @@ module RpTools
                         end
                       end
                       obj = obj_arr.sample
+                      skip = false
+                      squares_to_check = case @tileset['random']['objects'][obj]['size']
+                                         when 'large'
+                                           1
+                                         when 'huge'
+                                           2
+                                         when 'gargantuan'
+                                           3
+                                         when 'colossal'
+                                           5
+                                         else
+                                           0
+                                         end
+                      (i..i+squares_to_check).each do |sq_y|
+                        (j..j+squares_to_check).each do |sq_x|
+                          if map[sq_y] && map[sq_y][sq_x] && map[sq_y][sq_x] != 'F'
+                            skip = true
+                          elsif map[sq_y].nil? || map[sq_y][sq_x].nil?
+                            skip = true
+                          elsif ['small', 'medium', 'large',
+                                 'huge', 'gargantuan', 'colossal'].include?(@tileset['random']['objects'][obj]['size']) &&
+                                obj_map.include?([sq_x,sq_y])
+                            skip = true
+                          end
+                        end
+                      end
+                      next if skip
                       count += 1
                       token_map << count
+                      (i..i+squares_to_check).each do |sq_y|
+                        (j..j+squares_to_check).each do |sq_x|
+                          obj_map << [sq_x,sq_y]
+                        end
+                      end
                       offset = case @tileset['random']['objects'][obj]['size']
                                when 'fine', 'diminutive', 'tiny'
                                  12
