@@ -221,7 +221,7 @@ module RpTools
             xml.boardChanged false
             xml.name "Grasslands"
             xml.isVisible true
-            xml.visionType "OFF"
+            xml.visionType "NIGHT"
             xml.height 0
             xml.width 0
           } # zone
