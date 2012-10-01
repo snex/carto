@@ -1,0 +1,53 @@
+tiles:
+  F: assets/volcano/Floor.jpg
+  DT: assets/volcano/DoorHoriz.png
+  DB: assets/volcano/DoorHoriz.png
+  DL: assets/volcano/DoorVert.png
+  DR: assets/volcano/DoorVert.png
+  DST: assets/volcano/DoorHoriz.png
+  DSB: assets/volcano/DoorHoriz.png
+  DSR: assets/volcano/DoorVert.png
+  DSL: assets/volcano/DoorVert.png
+  DPT: assets/volcano/BarsHoriz.png
+  DPB: assets/volcano/BarsHoriz.png
+  DPR: assets/volcano/BarsVert.png
+  DPL: assets/volcano/BarsVert.png
+  W: assets/volcano/Wall.png
+random:
+  freq: 0.05
+  objects:
+    forge:
+      file: assets/volcano/Forge.png
+      name: 'Forge'
+      notes: 'A stone forge heated by the lava below.'
+      gm_notes: ''
+      size: large
+      light: 5
+      likelihood: 1
+    lava:
+      file: assets/volcano/Lava.png
+      name: 'Lava'
+      notes: 'A small pool of lava bubbles up from the floor.'
+      gm_notes: 'Anybody moving through a sqaure of lava takes 1 point of fire damage.'
+      size: ['medium', 'large', 'huge']
+      light: 5
+      likelihood: 3
+    smoke:
+      file: assets/volcano/Smoke.png
+      name: 'Smoke'
+      notes: 'A large billowing cloud of smoke.'
+      gm_notes: 'Characters must hold their breath through smoke or become sickened. It also offers concealment at 5ft and total concealment beyond 5ft.'
+      size: ['huge', 'gargantuan', 'colossal']
+      likelihood: 6
+    anvil:
+      file: assets/volcano/Anvil.png
+      name: 'Anvil'
+      notes: 'A well-used anvil.'
+      size: medium
+      likelihood: 1
+    coal:
+      file: assets/volcano/Coal.png
+      name: 'Coal'
+      notes: 'A huge pile of coal.'
+      size: huge
+      likelihood: 1
