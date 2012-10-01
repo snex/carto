@@ -99,7 +99,12 @@ module RpTools
                       end
                       obj = obj_arr.sample
                       skip = false
-                      squares_to_check = case @tileset['random']['objects'][obj]['size']
+                      if @tileset['random']['objects'][obj]['size'].is_a?(Array)
+                        size = @tileset['random']['objects'][obj]['size'].sample
+                      else
+                        size = @tileset['random']['objects'][obj]['size']
+                      end
+                      squares_to_check = case size
                                          when 'large'
                                            1
                                          when 'huge'
@@ -118,7 +123,7 @@ module RpTools
                           elsif map[sq_y].nil? || map[sq_y][sq_x].nil?
                             skip = true
                           elsif ['small', 'medium', 'large',
-                                 'huge', 'gargantuan', 'colossal'].include?(@tileset['random']['objects'][obj]['size']) &&
+                                 'huge', 'gargantuan', 'colossal'].include?(size) &&
                                 obj_map.include?([sq_x,sq_y])
                             skip = true
                           end
@@ -132,7 +137,7 @@ module RpTools
                           obj_map << [sq_x,sq_y]
                         end
                       end
-                      offset = case @tileset['random']['objects'][obj]['size']
+                      offset = case size
                                when 'fine', 'diminutive', 'tiny'
                                  12
                                when 'small'
@@ -150,7 +155,7 @@ module RpTools
                                    :gm_notes => generate_token_gm_notes(obj),
                                    :facing   => rand(360),
                                    :light    => @tileset['random']['objects'][obj]['light'],
-                                   :size     => @tileset['random']['objects'][obj]['size']
+                                   :size     => size
                                  }
                     end
                   elsif tile =~ /^D.*/
