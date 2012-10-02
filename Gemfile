@@ -1,5 +1,5 @@
 source :rubygems
 
-gem 'nokogiri', '1.5.2'
+gem 'nokogiri'
 gem 'rubyzip'
 gem 'awesome_print'

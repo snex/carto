@@ -1,14 +1,14 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    awesome_print (1.0.2)
-    nokogiri (1.5.2)
-    rubyzip (0.9.4)
+    awesome_print (1.1.0)
+    nokogiri (1.5.5)
+    rubyzip (0.9.9)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   awesome_print
-  nokogiri (= 1.5.2)
+  nokogiri
   rubyzip
