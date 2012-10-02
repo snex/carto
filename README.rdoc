@@ -9,3 +9,49 @@ Usage: ruby carto.rb -m map-file -o output_file -t tileset
     -o, --output-file [OUTPUT_FILE]  Output rpmap file
     -t, --tileset [TILESET]          Tileset
     -v, --version [VERSION]          MapTool version
+
+=== Tilesets
+
+Tilesets are defined by two things: the images themselves and the config file defining their properties.
+The config file is in YAML format and should be structured in the following manner:
+
+==== tiles section
+
+The tiles section defines the floor, wall, and doors of the dungeon.
+
+    tiles:
+      F: path/to/file    # floor tile
+      DT: path/to/file   # regular door, top of square
+      DB: path/to/file   # regular door, bottom of square
+      DL: path/to/file   # regular door, left of square
+      DR: path/to/file   # regular door, right of square
+      DST: path/to/file  # secret door, top of square
+      DSB: path/to/file  # secret door, bottom of square
+      DSR: path/to/file  # secret door, right of square
+      DSL: path/to/file  # secret door, left of square
+      DPT: path/to/file  # portcullis/gate, top of square
+      DPB: path/to/file  # portcullis/gate, bottom of square
+      DPL: path/to/file  # portcullis/gate, left of square
+      DPR: path/to/file  # portcullis/gate, right of square
+      W: path/to/file    # wall tile
+
+==== random section
+
+The random section is optional and defines random objects that are strewn about the dungeon.
+
+    random:
+      freq: 0.01              # probability that a random object populates a given square
+      objects:
+        obj_name:
+          file: path/to/file  # file containing the image for the object
+          name: name          # name of the object on the map
+          notes: notes        # optional. notes show up in the Notes field visible to all players
+          gm_notes: notes     # optional. gm_notes show up in the GM Only Notes field
+          size: size          # valid options are: fine, dimunitive, tiny, small, medium, large, huge, gargantuan, colossal
+                              # you may also specify multiple sizes in an array and a random one will be chosen
+          light: radius       # optional. this will give the object a light source of the given radius.
+                              # valid options are: 5, 15, 20, 30, 40, 60
+          likelihood: num     # this is the likelihood of the object appearing compared to all other random objects.
+                              # a likelihood of 2 will appear twice as often as a likelihood of 1, 5 will be five times as likely as 1, etc.
+
+All paths are relative to the location of carto, and image files should be stored in the 'assets' folder.
