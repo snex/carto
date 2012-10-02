@@ -49,7 +49,7 @@ module RpTools
                       60 => 'wKgCY4PCvh0MAAAAAKgCAw=='
     }
     SIZES = { 'fine'       => 'fwABAc1lFSoBAAAAKgABAQ==',
-              'dimunitive' => 'fwABAc1lFSoCAAAAKgABAQ==',
+              'diminutive' => 'fwABAc1lFSoCAAAAKgABAQ==',
               'tiny'       => 'fwABAc5lFSoDAAAAKgABAA==',
               'small'      => 'fwABAc5lFSoEAAAAKgABAA==',
               'medium'     => 'fwABAc9lFSoFAAAAKgABAQ==',
