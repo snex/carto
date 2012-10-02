@@ -122,9 +122,7 @@ module RpTools
                             skip = true
                           elsif map[sq_y].nil? || map[sq_y][sq_x].nil?
                             skip = true
-                          elsif ['small', 'medium', 'large',
-                                 'huge', 'gargantuan', 'colossal'].include?(size) &&
-                                obj_map.include?([sq_x,sq_y])
+                          elsif obj_map.include?([sq_x,sq_y])
                             skip = true
                           end
                         end
