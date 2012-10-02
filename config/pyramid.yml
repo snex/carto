@@ -1,0 +1,150 @@
+tiles:
+  F: assets/pyramid/Sand.png
+  DT: assets/pyramid/DoorHoriz.png
+  DB: assets/pyramid/DoorHoriz.png
+  DL: assets/pyramid/DoorVert.png
+  DR: assets/pyramid/DoorVert.png
+  DST: assets/pyramid/DoorHoriz.png
+  DSB: assets/pyramid/DoorHoriz.png
+  DSR: assets/pyramid/DoorVert.png
+  DSL: assets/pyramid/DoorVert.png
+  DPT: assets/pyramid/BarsHoriz.png
+  DPB: assets/pyramid/BarsHoriz.png
+  DPR: assets/pyramid/BarsVert.png
+  DPL: assets/pyramid/BarsVert.png
+  W: assets/pyramid/Wall.png
+random:
+  freq: 0.15
+  objects:
+    altar_sacrificial:
+      file: assets/pyramid/Altar,Sacrificial.png
+      name: 'Sacrificial Altar'
+      notes: 'Who knows what grisly rituals were performed upon this altar?'
+      size: large
+      likelihood: 50
+    altar_statue:
+      file: assets/pyramid/Altar,Statue.png
+      name: 'Altar to a Forgotten God'
+      notes: 'The god represented by this statue is long forgotten.'
+      size: ['large', 'huge']
+      likelihood: 25
+    blood:
+      file: assets/pyramid/Blood.png
+      name: 'Blood Spatter'
+      notes: 'This blood is still fresh.'
+      size: large
+      likelihood: 25
+    brazier:
+      file: assets/pyramid/Brazier.png
+      name: 'Brazier'
+      notes: 'An unlit brazier.'
+      size: tiny
+      likelihood: 50
+    chest:
+      file: assets/pyramid/Chest.png
+      name: 'Chest'
+      notes: 'A chest. I bet there is untold wealth within!'
+      size: tiny
+      likelihood: 5
+    column:
+      file: assets/pyramid/Column.png
+      name: 'Column'
+      notes: 'A fallen column.'
+      size: ['medium', 'large']
+      likelihood: 50
+    etching:
+      file: assets/pyramid/Etching.png
+      name: 'Strange Etching'
+      notes: 'A strange etching in the sand. Many footprints surround it but none disturb it.'
+      size: large
+      likelihood: 25
+    mosaic:
+      file: assets/pyramid/Mosaic.png
+      name: 'Mosaic'
+      notes: 'A mosaic of tiles set within the sandy floor.'
+      size: ['medium', 'large']
+      likelihood: 25
+    rubble:
+      file: assets/pyramid/Rubble.png
+      name: 'Rubble'
+      notes: 'Rubble.'
+      size: huge
+      likelihood: 50
+    sarcophagus:
+      file: assets/pyramid/Sarcophagus.png
+      name: 'Sarcophagus'
+      notes: 'An undisturbed sarcophagus.'
+      size: medium
+      likelihood: 5
+    sarcophagus_empty:
+      file: assets/pyramid/Sarcophagus,Empty.png
+      name: 'Sarcophagus'
+      notes: 'This sarcophagus has already been looted.'
+      size: medium
+      likelihood: 25
+    skeleton:
+      file: assets/pyramid/Skeleton.png
+      name: 'Skeleton'
+      notes: 'These bones are as old as the ruins that house them.'
+      size: medium
+      likelihood: 25
+    statue_anubis:
+      file: assets/pyramid/Statue,Anubis.png
+      name: 'Statue'
+      notes: 'A statue of a strange creature.'
+      size: large
+      likelihood: 25
+    statue_broken:
+      file: assets/pyramid/Statue,Broken.png
+      name: 'Broken Statue'
+      notes: 'This statue is broken.'
+      size: large
+      likelihood: 25
+    statue_cobra:
+      file: assets/pyramid/Statue,Cobra.png
+      name: 'Statue'
+      notes: 'A statue of a cobra.'
+      size: large
+      likelihood: 25
+    statue_dragon:
+      file: assets/pyramid/Statue,Dragon.png
+      name: 'Statue'
+      notes: 'A statue of a dragon.'
+      size: large
+      likelihood: 25
+    statue_sphinx:
+      file: assets/pyramid/Statue,Sphinx.png
+      name: 'Statue'
+      notes: 'A statue of a sphinx.'
+      size: large
+      likelihood: 25
+    tablet:
+      file: assets/pyramid/Tablet.png
+      name: 'Tablet'
+      notes: 'This tablet may help you decode the dead language written all over these ruins.'
+      size: tiny
+      likelihood: 1
+    treaure:
+      file: assets/pyramid/Treasure.png
+      name: 'Treasure'
+      notes: 'A giant mound of treasure ready for the taking.'
+      size: large
+      likelihood: 1
+    urn:
+      file: assets/pyramid/Urn.png
+      name: 'Urn'
+      notes: 'These urns lie everywhere.'
+      size: tiny
+      likelihood: 100
+    urn_broken:
+      file: assets/pyramid/Urn,Broken.png
+      name: 'Urn'
+      notes: 'These urns lie everywhere.'
+      size: tiny
+      likelihood: 100
+    web:
+      file: assets/pyramid/Web.png
+      name: 'Web'
+      gm_notes: 'Creatures attempting to move through web are entangled.'
+      size: ['medium', 'large', 'huge', 'gargantuan', 'colossal']
+      likelihood: 100
