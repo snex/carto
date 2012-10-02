@@ -1,0 +1,245 @@
+tiles:
+  F: assets/wizard_lab/Floor.png
+  DT: assets/wizard_lab/DoorHoriz.png
+  DB: assets/wizard_lab/DoorHoriz.png
+  DL: assets/wizard_lab/DoorVert.png
+  DR: assets/wizard_lab/DoorVert.png
+  DST: assets/wizard_lab/DoorHoriz.png
+  DSB: assets/wizard_lab/DoorHoriz.png
+  DSR: assets/wizard_lab/DoorVert.png
+  DSL: assets/wizard_lab/DoorVert.png
+  DPT: assets/wizard_lab/DoorHoriz.png
+  DPB: assets/wizard_lab/DoorHoriz.png
+  DPR: assets/wizard_lab/DoorVert.png
+  DPL: assets/wizard_lab/DoorVert.png
+  W: assets/wizard_lab/Wall.jpg
+random:
+  freq: 0.33
+  objects:
+    armchair:
+      file: assets/wizard_lab/Armchair.png
+      name: 'Armchair'
+      notes: 'Ahh, nice and comfy.'
+      gm_notes: ''
+      size: medium
+      likelihood: 10
+    barrel:
+      file: assets/wizard_lab/Barrel.png
+      name: 'Barrel'
+      notes: 'Just a barrel.'
+      gm_notes: 'Anybody moving through a sqaure of lava takes 1 point of fire damage.'
+      size: tiny
+      likelihood: 20
+    bathtub:
+      file: assets/wizard_lab/Bathtub.png
+      name: 'Bathtub'
+      notes: 'No time for a bath now!'
+      gm_notes: ''
+      size: large
+      likelihood: 2
+    bed:
+      file: assets/wizard_lab/Bed.png
+      name: 'Bed'
+      notes: "This isn't nap time."
+      size: large
+      likelihood: 2
+    birdcage:
+      file: assets/wizard_lab/Birdcage.png
+      name: 'Birdcage'
+      notes: 'Several birds flit around this cage.'
+      size: small
+      likelihood: 2
+    book:
+      file: assets/wizard_lab/Book.png
+      name: 'Book'
+      notes: 'Various arcane writings fill this book.'
+      size: tiny
+      likelihood: 5
+    book_pile:
+      file: assets/wizard_lab/Book Pile.png
+      name: 'Book Pile'
+      notes: 'A pile of books.'
+      size: large
+      likelihood: 10
+    bookshelf:
+      file: assets/wizard_lab/Bookshelf.png
+      name: 'Bookshelf'
+      notes: 'A shelf full of books.'
+      gm_notes: 'A DC 20 Perception check finds a random minor arcane scroll.'
+      size: large
+      likelihood: 5
+    brazier_lit:
+      file: assets/wizard_lab/Brazier,Lit.png
+      name: 'Brazier'
+      notes: 'How convenient, a lit brazier!'
+      gm_notes: ''
+      size: tiny
+      likelihood: 1
+      light: 20
+    brazier_unlit:
+      file: assets/wizard_lab/Brazier.png
+      name: 'Brazier'
+      notes: 'An unlit brazier.'
+      gm_notes: ''
+      size: tiny
+      likelihood: 2
+    cabinet:
+      file: assets/wizard_lab/Cabinet.png
+      name: 'Cabinet'
+      notes: 'A cabinet filled with various knick-knacks, baubles, trinkets, and even a few curios.'
+      size: large
+      likelihood: 10
+    carpet:
+      file: assets/wizard_lab/Carpet.png
+      name: 'Carpet'
+      notes: 'An exquisite carpet probably worth a good amount, if only you could carry it.'
+      size: ['large', 'huge', 'gargantuan', 'colossal']
+      likelihood: 20
+    cauldron:
+      file: assets/wizard_lab/Cauldron.png
+      name: 'Cauldron'
+      notes: 'A cauldron for brewing potions and other magical liquids.'
+      size: small
+      likelihood: 5
+    chair:
+      file: assets/wizard_lab/Chair.png
+      name: 'Chair'
+      notes: 'Just a chair.'
+      size: small
+      likelihood: 20
+    chess:
+      file: assets/wizard_lab/Chess.png
+      name: 'Chessboard'
+      notes: 'White has strategically executed a Spassky Bishop Block and has mate in 3.'
+      size: tiny
+      likelihood: 5
+    chest:
+      file: assets/wizard_lab/Chest.png
+      name: 'Chest'
+      notes: 'A chest. I bet there is untold wealth within!'
+      gm_notes: ''
+      size: tiny
+      likelihood: 1
+    cloth:
+      file: assets/wizard_lab/Cloth.png
+      name: 'Cloth'
+      notes: 'Just a bolt of cloth absentmindedly left laying about.'
+      size: tiny
+      likelihood: 5
+    coins:
+      file: assets/wizard_lab/Coins.png
+      name: 'Coins'
+      notes: 'At least 50gp worth of miscellaneous coin lies strewn about.'
+      size: medium
+      likelihood: 1
+    crate:
+      file: assets/wizard_lab/Crate.png
+      name: 'Crate'
+      notes: 'Various sundries fill this crate.'
+      size: small
+      likelihood: 20
+    crystal_ball:
+      file: assets/wizard_lab/Crystal Ball.png
+      name: 'Crystal Ball'
+      notes: 'A crystal ball for scrying.'
+      size: diminutive
+      likelihood: 1
+    crystal_black:
+      file: assets/wizard_lab/Crystal,Black.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    crystal_green:
+      file: assets/wizard_lab/Crystal,Green.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    crystal_orange:
+      file: assets/wizard_lab/Crystal,Orange.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    crystal_red:
+      file: assets/wizard_lab/Crystal,Red.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    crystal_violet:
+      file: assets/wizard_lab/Crystal,Violet.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    crystal_white:
+      file: assets/wizard_lab/Crystal,White.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    crystal_yellow:
+      file: assets/wizard_lab/Crystal,Yellow.png
+      name: 'Crystal'
+      notes: 'This crystal is probably used as a spell component.'
+      size: diminutive
+      likelihood: 1
+    desk:
+      file: assets/wizard_lab/Desk.png
+      name: 'Desk'
+      notes: 'A desk.'
+      size: large
+      likelihood: 5
+    fireplace:
+      file: assets/wizard_lab/Fireplace.png
+      name: 'Fireplace'
+      notes: 'A fireplace.'
+      size: large
+      likelihood: 1
+    mirror:
+      file: assets/wizard_lab/Mirror.png
+      name: 'Mirror'
+      notes: 'Who is that ugly person behind this glass contraption?'
+      size: large
+      likelihood: 1
+    mortar_and_pestle:
+      file: assets/wizard_lab/Mortar And Pestle.png
+      name: 'Mortar & Pestle'
+      notes: 'A mortar and pestle can be used to craft spell components.'
+      size: diminutive
+      likelihood: 3
+    scorch:
+      file: assets/wizard_lab/Scorch.png
+      name: 'Scorch Mark'
+      notes: 'This scorch mark probably represents some failed arcane experiment.'
+      size: ['medium', 'large']
+      likelihood: 5
+    scroll:
+      file: assets/wizard_lab/Scroll.png
+      name: 'Scroll'
+      notes: 'A scroll.'
+      gm_notes: 'A random minor arcane scroll.'
+      size: diminutive
+      likelihood: 1
+    summoning_circle:
+      file: assets/wizard_lab/Summoning Circle.png
+      name: 'Pentagram'
+      notes: 'A strange pentagram drawn on the ground with silvery powder.'
+      gm_notes: 'A DC 20 Spellcraft check reveals that this is most likely a summoning circle.'
+      size: small
+      likelihood: 1
+    table:
+      file: assets/wizard_lab/Table.png
+      name: 'Table'
+      notes: 'A table.'
+      size: ['large', 'huge']
+      likelihood: 10
+    table_alchemy:
+      file: assets/wizard_lab/Table,Alchemy.png
+      name: 'Table'
+      notes: 'A table filled with alchemical items.'
+      gm_notes: "20% chance of finding either an Alchemist's Fire or Acid Flask with a DC 20 Perception check or DC 10 Craft(Alchemy) check."
+      size: ['large', 'huge']
+      likelihood: 1
