@@ -1,0 +1,82 @@
+tiles:
+  F: assets/crypt/Floor.png
+  DT: assets/crypt/DoorHoriz.png
+  DB: assets/crypt/DoorHoriz.png
+  DL: assets/crypt/DoorVert.png
+  DR: assets/crypt/DoorVert.png
+  DST: assets/crypt/DoorHoriz.png
+  DSB: assets/crypt/DoorHoriz.png
+  DSR: assets/crypt/DoorVert.png
+  DSL: assets/crypt/DoorVert.png
+  DPT: assets/crypt/BarsHoriz.png
+  DPB: assets/crypt/BarsHoriz.png
+  DPR: assets/crypt/BarsVert.png
+  DPL: assets/crypt/BarsVert.png
+  W: assets/crypt/Wall.jpg
+random:
+  freq: 0.25
+  objects:
+    altar:
+      file: assets/crypt/Altar.png
+      name: 'Altar'
+      size: large
+      likelihood: 2
+    blood:
+      file: assets/crypt/Blood.png
+      name: 'Blood'
+      size: large
+      likelihood: 5
+    bone_pile:
+      file: 'assets/crypt/BonePile.png'
+      name: 'Bone Pile'
+      size: large
+      likelihood: 2
+    bones:
+      file: assets/crypt/Bones.png
+      name: 'Bones'
+      size: ['small', 'medium']
+      likelihood: 5
+    candles:
+      file: assets/crypt/Candles.png
+      name: 'Candles'
+      size: tiny
+      likelihood: 2
+      light: 5
+    coffin:
+      file: assets/crypt/Coffin.png
+      name: 'Coffin'
+      size: ['small', 'medium']
+      likelihood: 20
+    coins:
+      file: assets/crypt/Coins.png
+      name: 'Coins'
+      gm_notes: '2d10 silver pieces'
+      size: tiny
+      likelihood: 1
+    floor_hole:
+      file: assets/crypt/FloorHole.png
+      name: 'Hole'
+      gm_notes: 'Difficult Terrain'
+      size: ['medium', 'large']
+      likelihood: 5
+    scratch:
+      file: assets/crypt/Scratch.png
+      name: 'Scratch'
+      size: ['tiny', 'small']
+      likelihood: 2
+    skeleton:
+      file: assets/crypt/Skeleton.png
+      name: 'Skeleton'
+      size: ['small', 'medium']
+      likelihood: 5
+    urn:
+      file: assets/crypt/Urn.png
+      name: 'Urn'
+      size: tiny
+      likelihood: 20
+    web:
+      file: assets/crypt/Web.png
+      name: 'Web'
+      gm_notes: 'Creatures in a web square are entangled.'
+      size: ['medium', 'large', 'huge']
+      likelihood: 10
