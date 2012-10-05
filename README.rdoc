@@ -57,7 +57,7 @@ The random section is optional and defines random objects that are strewn about 
           name: name          # name of the object on the map
           notes: notes        # optional. notes show up in the Notes field visible to all players
           gm_notes: notes     # optional. gm_notes show up in the GM Only Notes field
-          size: size          # valid options are: fine, dimunitive, tiny, small, medium, large, huge, gargantuan, colossal
+          size: size          # valid options are: fine, diminutive, tiny, small, medium, large, huge, gargantuan, colossal
                               # you may also specify multiple sizes in an array and a random one will be chosen
           light: radius       # optional. this will give the object a light source of the given radius.
                               # valid options are: 5, 15, 20, 30, 40, 60
