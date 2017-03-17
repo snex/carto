@@ -89,7 +89,7 @@ module RpTools
               obj_map = []
               map.each_with_index do |row, i|
                 row.each_with_index do |tile, j|
-                  if tile == 'F'
+                  if tile =~ /^(F|S)/
                     if @tileset['random'] && rand < @tileset['random']['freq'].to_f
                       obj_arr = []
                       @tileset['random']['objects'].each do |obj_name, obj_data|
